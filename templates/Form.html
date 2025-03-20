@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Disponibilidad - Profesorado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .header-bg {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+        }
+
+        .ascii-tag {
+            color: #00ffcc;
+            /* Verde neón para vibe futurista */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            text-shadow: 0 0 5px #00ffcc;
+            /* Sombra cyberpunk */
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        <!-- Encabezado -->
+        <div class="header-bg p-6 text-white">
+            <h1 class="text-3xl font-semibold flex items-center">
+                <i class="fas fa-calendar-alt mr-3"></i>
+                Formulario de Disponibilidad - Reuniones Académicas
+            </h1>
+            <p class="mt-2 text-sm opacity-80">Por favor, indique su disponibilidad para coordinar reuniones.</p>
+        </div>
+        <!-- Formulario -->
+        <form id="disponibilidadForm" class="p-8">
+            <!-- Datos personales -->
+            <div class="mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="nombre" class="block text-sm font-medium text-gray-700 mb-2">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                    </div>
+                    <div>
+                        <label for="apellidos" class="block text-sm font-medium text-gray-700 mb-2">Apellidos:</label>
+                        <input type="text" id="apellidos" name="apellidos" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                    </div>
+                </div>
+            </div>
+            <!-- Selección de días -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-calendar-day mr-2 text-blue-600"></i> Días Disponibles
+                </h2>
+                <div class="flex flex-wrap gap-6">
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" id="lunes" name="dias" value="lunes"
+                            class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            onchange="toggleHoursSection('lunes')">
+                        <span class="ml-2 text-sm font-medium text-gray-700">Lunes</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" id="martes" name="dias" value="martes"
+                            class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            onchange="toggleHoursSection('martes')">
+                        <span class="ml-2 text-sm font-medium text-gray-700">Martes</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" id="miercoles" name="dias" value="miercoles"
+                            class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            onchange="toggleHoursSection('miercoles')">
+                        <span class="ml-2 text-sm font-medium text-gray-700">Miércoles</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" id="jueves" name="dias" value="jueves"
+                            class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            onchange="toggleHoursSection('jueves')">
+                        <span class="ml-2 text-sm font-medium text-gray-700">Jueves</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" id="viernes" name="dias" value="viernes"
+                            class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            onchange="toggleHoursSection('viernes')">
+                        <span class="ml-2 text-sm font-medium text-gray-700">Viernes</span>
+                    </label>
+                </div>
+            </div>
+            <!-- Secciones de horas -->
+            <div id="lunes-horas" class="mb-6 p-5 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                <h3 class="text-lg font-medium text-gray-800 mb-3 flex items-center">
+                    <i class="fas fa-clock mr-2 text-blue-600"></i> Horas - Lunes
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="8:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">8:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="9:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">9:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="10:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">10:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="11:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">11:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="12:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">12:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="13:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">13:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="14:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">14:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="15:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">15:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="16:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">16:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="17:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">17:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="18:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">18:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="lunes-horas" value="19:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">19:00</span></label>
+                </div>
+            </div>
+            <div id="martes-horas" class="mb-6 p-5 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                <h3 class="text-lg font-medium text-gray-800 mb-3 flex items-center">
+                    <i class="fas fa-clock mr-2 text-blue-600"></i> Horas - Martes
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="8:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">8:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="9:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">9:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="10:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">10:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="11:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">11:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="12:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">12:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="13:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">13:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="14:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">14:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="15:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">15:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="16:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">16:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="17:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">17:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="18:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">18:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="martes-horas" value="19:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">19:00</span></label>
+                </div>
+            </div>
+            <div id="miercoles-horas" class="mb-6 p-5 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                <h3 class="text-lg font-medium text-gray-800 mb-3 flex items-center">
+                    <i class="fas fa-clock mr-2 text-blue-600"></i> Horas - Miércoles
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="8:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">8:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="9:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">9:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="10:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">10:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="11:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">11:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="12:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">12:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="13:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">13:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="14:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">14:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="15:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">15:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="16:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">16:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="17:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">17:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="18:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">18:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="miercoles-horas" value="19:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">19:00</span></label>
+                </div>
+            </div>
+            <div id="jueves-horas" class="mb-6 p-5 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                <h3 class="text-lg font-medium text-gray-800 mb-3 flex items-center">
+                    <i class="fas fa-clock mr-2 text-blue-600"></i> Horas - Jueves
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="8:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">8:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="9:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">9:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="10:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">10:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="11:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">11:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="12:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">12:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="13:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">13:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="14:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">14:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="15:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">15:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="16:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">16:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="17:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">17:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="18:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">18:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="jueves-horas" value="19:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">19:00</span></label>
+                </div>
+            </div>
+            <div id="viernes-horas" class="mb-6 p-5 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                <h3 class="text-lg font-medium text-gray-800 mb-3 flex items-center">
+                    <i class="fas fa-clock mr-2 text-blue-600"></i> Horas - Viernes
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="8:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">8:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="9:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">9:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="10:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">10:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="11:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">11:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="12:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">12:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="13:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">13:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="14:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">14:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="15:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">15:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="16:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">16:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="17:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">17:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="18:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">18:00</span></label>
+                    <label class="flex items-center"><input type="checkbox" name="viernes-horas" value="19:00"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><span
+                            class="ml-2 text-sm text-gray-700">19:00</span></label>
+                </div>
+            </div>
+            <!-- Botón de envío -->
+            <div class="mt-8">
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 flex items-center justify-center">
+                    <i class="fas fa-paper-plane mr-2"></i> Enviar Disponibilidad
+                </button>
+            </div>
+        </form>
+    </div>
+    <script>
+        // Mostrar/ocultar secciones de horas según los días seleccionados
+        function toggleHoursSection(day) {
+            const section = document.getElementById(`${day}-horas`);
+            const checkbox = document.getElementById(day);
+            section.classList.toggle('hidden', !checkbox.checked);
+        }
+
+        // Manejar el envío del formulario
+        document.getElementById('disponibilidadForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                apellidos: document.getElementById('apellidos').value,
+                disponibilidad: {}
+            };
+
+            const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
+            days.forEach(day => {
+                if (document.getElementById(day).checked) {
+                    const hours = [];
+                    document.querySelectorAll(`input[name="${day}-horas"]:checked`).forEach(checkbox => {
+                        hours.push(checkbox.value);
+                    });
+                    formData.disponibilidad[day] = hours;
+                }
+            });
+
+            console.log('Datos del formulario:', formData);
+            alert('Disponibilidad enviada con éxito. Revisa la consola para ver los datos.');
+        });
+    </script>
+    <!--
+         ██████╗  █████╗ ██████╗ ██╗      ██████╗
+         ██╔══██╗██╔══██╗██╔══██╗██║     ██╔═══██╗
+         ██████╔╝███████║██████╔╝██║     ██║   ██║
+         ██╔═══╝ ██╔══██║██╔══██╗██║     ██║   ██║
+         ██║     ██║  ██║██████╔╝███████╗╚██████╔╝
+         ╚═╝     ╚═╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝
+
+                     /\      /\      /\      /\
+                    /  \    /  \    /  \    /  \
+                   /    \  /    \  /    \  /    \
+                  /      \/      \/      \/      \
+                 /|      ||      ||      ||      |\
+                / |      ||      ||      ||      | \
+               /  |      ||      ||      ||      |  \
+              /   |      ||      ||      ||      |   \
+             /    |      ||      ||      ||      |    \
+            /     |______||______||______||______|     \
+           /                                            \
+          /____________________________________________\
+
+         Código por Pablo
+         -->
+</body>
+
+</html>

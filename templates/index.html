@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>Campus Cámara FP - Gestión de Horarios</title>
+
+</head>
+
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">Campus Cámara FP</a>
+            <nav>
+                <div class="nav-links">
+                    <a href="#">Inicio</a>
+                    <a href="#">Características</a>
+                    <a href="#">Acceso</a>
+                    <a href="#">Contacto</a>
+                </div>
+                <button class="menu-toggle">&#9776;</button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Gestión Eficiente de Horarios para el Claustro</h1>
+            <p>Una solución integral que simplifica la organización y planificación de horarios para profesores en
+                Campus Cámara FP. Optimiza tu tiempo y mejora la coordinación académica.</p>
+            <a href="#formulario" class="btn">Acceder al Formulario</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Características Principales</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Organización Inteligente</h3>
+                    <p>Sistema avanzado que optimiza la distribución de horarios según disponibilidad y especialidades
+                        de cada profesor.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Acceso Móvil</h3>
+                    <p>Consulta tus horarios desde cualquier dispositivo. Nuestra plataforma es completamente
+                        responsive.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Notificaciones</h3>
+                    <p>Recibe alertas sobre cambios en tu horario, sustituciones y eventos importantes del centro.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta" id="formulario">
+        <div class="container">
+            <h2>¿Listo para optimizar la gestión de tus horarios?</h2>
+            <p>Accede al formulario para profesores y comienza a disfrutar de todas las ventajas de nuestra plataforma.
+            </p>
+            <a href="#" class="btn">Completar Formulario</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Campus Cámara FP</h3>
+                    <p>Tu centro de formación profesional de referencia en España.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <a href="#">Inicio</a>
+                    <a href="#">Contacto</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Dirección: Calle Principal, 123</p>
+                    <p>Email: info@campuscamarafp.es</p>
+                    <p>Teléfono: +34 123 456 789</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
+                <button class="easter-egg-btn">Campus Cámara FP • 2025</button>
+            </div>
+        </div>
+    </footer>
+
+    <div class="easter-egg-modal">
+        <div class="easter-egg-content">
+            <h2>¡Has descubierto un secreto!</h2>
+            <p>Bienvenido a nuestro pequeño rincón oculto. Aquí tienes una sorpresa:</p>
+            <div class="ascii-container">
+                <pre class="ascii-art">
+                             ██████╗  █████╗ ██████╗ ██╗      ██████╗ 
+                             ██╔══██╗██╔══██╗██╔══██╗██║     ██╔═══██╗
+                             ██████╔╝███████║██████╔╝██║     ██║   ██║
+                             ██╔═══╝ ██╔══██║██╔══██╗██║     ██║   ██║
+                             ██║     ██║  ██║██████╔╝███████╗╚██████╔╝
+                             ╚═╝     ╚═╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝ 
+                                                                
+                                         /\      /\      /\      /\            
+                                        /  \    /  \    /  \    /  \           
+                                       /    \  /    \  /    \  /    \          
+                                      /      \/      \/      \/      \         
+                                     /|      ||      ||      ||      |\        
+                                    / |      ||      ||      ||      | \       
+                                   /  |      ||      ||      ||      |  \      
+                                  /   |      ||      ||      ||      |   \     
+                                 /    |      ||      ||      ||      |    \    
+                                /     |______||______||______||______|     \   
+                               /                                            \  
+                              /______________________________________________\
+                            </pre>
+            </div>
+            <p>¡Gracias por ser parte de Campus Cámara FP!</p>
+            <button class="close-btn">Cerrar</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+
+</html>
