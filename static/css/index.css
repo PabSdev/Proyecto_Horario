@@ -294,7 +294,6 @@ footer {
     background-color: #e08700;
 }
 
-/* Estilos mejorados para el contenedor ASCII */
 .ascii-container {
     display: flex;
     justify-content: center;
@@ -307,7 +306,6 @@ footer {
     padding: 10px 0;
 }
 
-/* Estilos mejorados para el ASCII art */
 .ascii-art {
     font-family: 'Courier New', monospace;
     font-size: 12px;
