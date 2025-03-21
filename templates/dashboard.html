@@ -7,42 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .header-bg {
-            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-        }
-
-        .btn-glow:hover {
-            box-shadow: 0 0 15px #3b82f6;
-            transform: translateY(-2px);
-        }
-
-        .ascii-tag {
-            color: #00ffcc;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            text-shadow: 0 0 5px #00ffcc;
-            margin-top: 10px;
-            opacity: 0.9;
-        }
-
-        .grid-horario {
-            display: grid;
-            grid-template-columns: 80px repeat(5, 1fr);
-            font-size: 0.875rem;
-        }
-
-        @media (max-width: 768px) {
-            .grid-horario {
-                grid-template-columns: 60px repeat(5, 1fr);
-                font-size: 0.75rem;
-            }
-        }
-    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dashboard.css') }}"
+    />
 </head>
 <body class="bg-gray-100 min-h-screen">
 <!-- Header -->

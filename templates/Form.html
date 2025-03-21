@@ -1,254 +1,235 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/form.css') }}"
+    />
+    <title>Campus Cámara FP - Formulario de Horarios</title>
+  </head>
 
-<head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
-        <title>Campus Cámara FP - Formulario de Horarios</title>
-</head>
-
-<body>
-        <header>
-                <div class="container header-container">
-                        <a href="/" class="logo">Campus Cámara FP</a>
-                        <nav>
-                                <div class="nav-links">
-                                        <a href="/">Inicio</a>
-                                        <a href="#">Características</a>
-                                        <a href="#">Acceso</a>
-                                        <a href="#">Contacto</a>
-                                </div>
-                        </nav>
-                </div>
-        </header>
-
-        <div class="container">
-                <div class="form-container">
-                        <div class="form-header">
-                                <h2>Formulario de Gestión de Horarios</h2>
-                                <p>Complete la información para optimizar su horario académico</p>
-                        </div>
-
-                        <form action="/submit-form" method="post">
-                                <div class="form-body">
-                                        <!-- Sección Información Personal -->
-                                        <div class="form-section">
-                                                <h3 class="form-section-title">Información Personal</h3>
-                                                <div class="form-row">
-                                                        <div class="form-col form-col-6">
-                                                                <div class="form-group">
-                                                                        <label for="nombre"
-                                                                                class="form-label required">Nombre</label>
-                                                                        <input type="text" class="form-control"
-                                                                                id="nombre" name="nombre" required>
-                                                                </div>
-                                                        </div>
-                                                        <div class="form-col form-col-6">
-                                                                <div class="form-group">
-                                                                        <label for="apellidos"
-                                                                                class="form-label required">Apellidos</label>
-                                                                        <input type="text" class="form-control"
-                                                                                id="apellidos" name="apellidos"
-                                                                                required>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                                <div class="form-row">
-                                                        <div class="form-col form-col-6">
-                                                                <div class="form-group">
-                                                                        <label for="email"
-                                                                                class="form-label required">Correo
-                                                                                Electrónico</label>
-                                                                        <input type="email" class="form-control"
-                                                                                id="email" name="email" required>
-                                                                </div>
-                                                        </div>
-                                                        <div class="form-col form-col-6">
-                                                                <div class="form-group">
-                                                                        <label for="telefono"
-                                                                                class="form-label">Teléfono</label>
-                                                                        <input type="tel" class="form-control"
-                                                                                id="telefono" name="telefono">
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                        <!-- Sección Preferencias de Horario -->
-                                        <div class="form-section">
-                                                <h3 class="form-section-title">Preferencias de Horario</h3>
-                                                <div class="form-row">
-                                                        <div class="form-col form-col-4">
-                                                                <div class="form-group">
-                                                                        <label class="form-label">Turno
-                                                                                preferido</label>
-                                                                        <div class="form-check">
-                                                                                <input class="form-check-input"
-                                                                                        type="radio" name="turno"
-                                                                                        id="turno_manana" value="manana"
-                                                                                        checked>
-                                                                                <label class="form-check-label"
-                                                                                        for="turno_manana">Mañana</label>
-                                                                        </div>
-                                                                        <div class="form-check">
-                                                                                <input class="form-check-input"
-                                                                                        type="radio" name="turno"
-                                                                                        id="turno_tarde" value="tarde">
-                                                                                <label class="form-check-label"
-                                                                                        for="turno_tarde">Tarde</label>
-                                                                        </div>
-                                                                        <div class="form-check">
-                                                                                <input class="form-check-input"
-                                                                                        type="radio" name="turno"
-                                                                                        id="turno_indiferente"
-                                                                                        value="indiferente">
-                                                                                <label class="form-check-label"
-                                                                                        for="turno_indiferente">Indiferente</label>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-                                                        <div class="form-col form-col-4">
-                                                                <div class="form-group">
-                                                                        <label class="form-label">Días
-                                                                                preferidos</label>
-                                                                        <div class="form-check">
-                                                                                <input class="form-check-input"
-                                                                                        type="checkbox" name="dias[]"
-                                                                                        id="dia_lunes" value="lunes">
-                                                                                <label class="form-check-label"
-                                                                                        for="dia_lunes">Lunes</label>
-                                                                        </div>
-                                                                        <div class="form-check">
-                                                                                <input class="form-check-input"
-                                                                                        type="checkbox" name="dias[]"
-                                                                                        id="dia_martes" value="martes">
-                                                                                <label class="form-check-label"
-                                                                                        for="dia_martes">Martes</label>
-                                                                        </div>
-                                                                        <div class="form-check">
-                                                                                <input class="form-check-input"
-                                                                                        type="checkbox" name="dias[]"
-                                                                                        id="dia_miercoles"
-                                                                                        value="miercoles">
-                                                                                <label class="form-check-label"
-                                                                                        for="dia_miercoles">Miércoles</label>
-                                                                        </div>
-                                                                        <div class="form-check">
-                                                                                <input class="form-check-input"
-                                                                                        type="checkbox" name="dias[]"
-                                                                                        id="dia_jueves" value="jueves">
-                                                                                <label class="form-check-label"
-                                                                                        for="dia_jueves">Jueves</label>
-                                                                        </div>
-                                                                        <div class="form-check">
-                                                                                <input class="form-check-input"
-                                                                                        type="checkbox" name="dias[]"
-                                                                                        id="dia_viernes"
-                                                                                        value="viernes">
-                                                                                <label class="form-check-label"
-                                                                                        for="dia_viernes">Viernes</label>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-                                                        <div class="form-col form-col-4">
-                                                                <div class="form-group">
-                                                                        <label for="horas_max" class="form-label">Horas
-                                                                                máximas diarias</label>
-                                                                        <select class="form-select" id="horas_max"
-                                                                                name="horas_max">
-                                                                                <option value="4">4 horas</option>
-                                                                                <option value="5">5 horas</option>
-                                                                                <option value="6" selected>6 horas
-                                                                                </option>
-                                                                                <option value="7">7 horas</option>
-                                                                                <option value="8">8 horas</option>
-                                                                        </select>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                        </div>
-
-                                        <!-- Sección Restricciones y Observaciones -->
-                                        <div class="form-section">
-                                                <h3 class="form-section-title">Restricciones y Observaciones</h3>
-                                                <div class="form-row">
-                                                        <div class="form-col">
-                                                                <div class="form-group">
-                                                                        <label for="restricciones"
-                                                                                class="form-label">Restricciones
-                                                                                horarias</label>
-                                                                        <textarea class="form-control"
-                                                                                id="restricciones" name="restricciones"
-                                                                                rows="3"></textarea>
-                                                                        <small class="text-muted">Indique si tiene
-                                                                                alguna restricción horaria
-                                                                                específica</small>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                                <div class="form-row">
-                                                        <div class="form-col">
-                                                                <div class="form-group">
-                                                                        <label for="observaciones"
-                                                                                class="form-label">Observaciones
-                                                                                adicionales</label>
-                                                                        <textarea class="form-control"
-                                                                                id="observaciones" name="observaciones"
-                                                                                rows="3"></textarea>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </div>
-
-                                <div class="form-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                                style="margin-right: 10px;">Cancelar</button>
-                                        <button type="submit" class="btn btn-accent">Enviar Solicitud</button>
-                                </div>
-                        </form>
-                </div>
-
-                <div class="text-center mt-4 mb-4">
-                        <p>¿Necesita ayuda para completar el formulario?
-                                <a href="#" style="color: var(--primary);">Contacte con nosotros</a>
-                        </p>
-                </div>
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <div class="form-header">
+          <h2>Formulario de Gestión de Horarios</h2>
+          <p>Complete la información para optimizar su horario académico</p>
         </div>
 
-        <footer>
-                <div class="container">
-                        <div class="footer-content">
-                                <div class="footer-section">
-                                        <h3>Campus Cámara FP</h3>
-                                        <p>Tu centro de formación profesional de referencia en España.</p>
-                                        <div class="social-links">
-                                                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                                                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                                                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                                                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                </div>
-                                <div class="footer-section">
-                                        <h3>Enlaces Rápidos</h3>
-                                        <a href="/">Inicio</a>
-                                        <a href="#">Contacto</a>
-                                </div>
-                                <div class="footer-section">
-                                        <h3>Contacto</h3>
-                                        <p>Dirección: Calle Principal, 123</p>
-                                        <p>Email: info@campuscamarafp.es</p>
-                                        <p>Teléfono: +34 123 456 789</p>
-                                </div>
-                        </div>
-                        <div class="copyright">
-                                <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
-                        </div>
+        <form id="availabilityForm" action="/submit-form" method="post">
+          <div class="form-body">
+            <!-- Sección Información Personal -->
+            <div class="form-section">
+              <h3 class="form-section-title">Información Personal</h3>
+              <div class="form-row">
+                <div class="form-col form-col-6">
+                  <div class="form-group">
+                    <label for="nombre" class="form-label required"
+                      >Nombre</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="nombre"
+                      name="nombre"
+                      required
+                    />
+                  </div>
                 </div>
-        </footer>
+                <div class="form-col form-col-6">
+                  <div class="form-group">
+                    <label for="apellidos" class="form-label required"
+                      >Apellidos</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="apellidos"
+                      name="apellidos"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Sección Preferencias de Horario -->
+            <div class="form-section">
+              <h3 class="form-section-title">Preferencias de Horario</h3>
+              <p class="mb-4">
+                Seleccione los días en los que está disponible y sus horas
+                preferidas:
+              </p>
 
-        <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-</body>
+              <div class="form-row">
+                <div class="form-col">
+                  <div class="days-selection">
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        id="lunes"
+                        name="dias[]"
+                        value="lunes"
+                        class="form-check-input day-checkbox"
+                      />
+                      <label for="lunes" class="form-check-label">Lunes</label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        id="martes"
+                        name="dias[]"
+                        value="martes"
+                        class="form-check-input day-checkbox"
+                      />
+                      <label for="martes" class="form-check-label"
+                        >Martes</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        id="miercoles"
+                        name="dias[]"
+                        value="miercoles"
+                        class="form-check-input day-checkbox"
+                      />
+                      <label for="miercoles" class="form-check-label"
+                        >Miércoles</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        id="jueves"
+                        name="dias[]"
+                        value="jueves"
+                        class="form-check-input day-checkbox"
+                      />
+                      <label for="jueves" class="form-check-label"
+                        >Jueves</label
+                      >
+                    </div>
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        id="viernes"
+                        name="dias[]"
+                        value="viernes"
+                        class="form-check-input day-checkbox"
+                      />
+                      <label for="viernes" class="form-check-label"
+                        >Viernes</label
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <div class="time-cards-container mt-4">
+                <div id="lunes-card" class="time-card" style="display: none">
+                  <h4>Horas Lunes</h4>
+                  <div id="lunes-hours" class="time-slots"></div>
+                </div>
+
+                <div id="martes-card" class="time-card" style="display: none">
+                  <h4>Horas Martes</h4>
+                  <div id="martes-hours" class="time-slots"></div>
+                </div>
+
+                <div id="martes-card" class="time-card" style="display: none">
+                  <h4>Horas Martes</h4>
+                  <div id="martes-hours" class="time-slots"></div>
+                </div>
+
+                <div
+                  id="miercoles-card"
+                  class="time-card"
+                  style="display: none"
+                >
+                  <h4>Horas Miércoles</h4>
+                  <div id="miercoles-hours" class="time-slots"></div>
+                </div>
+
+                <div id="jueves-card" class="time-card" style="display: none">
+                  <h4>Horas Jueves</h4>
+                  <div id="jueves-hours" class="time-slots"></div>
+                </div>
+
+                <div id="viernes-card" class="time-card" style="display: none">
+                  <h4>Horas Viernes</h4>
+                  <div id="viernes-hours" class="time-slots"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <a
+              href="{{ url_for('landing_page') }}"
+              class="btn btn-secondary"
+              style="margin-right: 10px"
+            >
+              Cancelar
+            </a>
+            <button type="submit" class="btn btn-accent" id="submit">
+              Enviar Solicitud
+            </button>
+          </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="text-center mt-4 mb-4">
+        <p>
+          ¿Necesita ayuda para completar el formulario?
+          <a href="#" style="color: var(--primary)">Contacte con nosotros</a>
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Campus Cámara FP</h3>
+            <p>Tu centro de formación profesional de referencia en España.</p>
+            <div class="social-links">
+              <a href="#" class="social-icon"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h3>Enlaces Rápidos</h3>
+            <a href="/">Inicio</a>
+            <a href="#">Contacto</a>
+          </div>
+          <div class="footer-section">
+            <h3>Contacto</h3>
+            <p>Dirección: Calle Principal, 123</p>
+            <p>Email: info@campuscamarafp.es</p>
+            <p>Teléfono: +34 123 456 789</p>
+          </div>
+        </div>
+        <div class="copyright">
+          <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/form.js') }}"></script>
+  </body>
 </html>

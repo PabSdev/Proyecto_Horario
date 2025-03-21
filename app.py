@@ -12,6 +12,22 @@ def landing_page():
 def form():
     return render_template('Form.html')
 
+@app.route('/submit-form', methods=['POST'])
+def submit_form():
+    nombre = request.form['Nombre']
+    apellidos = request.form['Apellidos']
+    
+    dias = {}
+    
+    for dias in dias_seleccionados:
+        horas_key = f'horas[{dia}][]'
+        horas = request.form.getlist(horas_key)
+        horario[dia] = horas
+        
+    #recorre la tupla y muestra la informacion por dia y por hora
+    for horario, dias in horario.items():
+        for hora in horas:
+            print(f'Dia: {dia}, Hora: {hora}')
 
 @app.route('/Dashboard')
 def dashboard():
