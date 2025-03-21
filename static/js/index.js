@@ -1,18 +1,22 @@
-const easterEggBtn = document.querySelector('.easter-egg-btn')
-const easterEggModal = document.querySelector('.easter-egg-modal')
-const closeBtn = document.querySelector('.close-btn')
+document.addEventListener('DOMContentLoaded', function () {
+  const easterEggBtn = document.querySelector('.easter-egg-btn');
+  const easterEggModal = document.querySelector('.easter-egg-modal');
+  const closeBtn = document.querySelector('.close-btn');
 
-easterEggBtn.addEventListener('click', function () {
-    easterEggModal.classList.add('active')
-})
+  easterEggBtn.addEventListener('click', function () {
+    easterEggModal.classList.add('opacity-100');
+    easterEggModal.classList.remove('pointer-events-none');
+  });
 
-closeBtn.addEventListener('click', function () {
-    easterEggModal.classList.remove('active')
-})
+  closeBtn.addEventListener('click', function () {
+    easterEggModal.classList.remove('opacity-100');
+    easterEggModal.classList.add('pointer-events-none');
+  });
 
-// Cerrar modal al hacer clic fuera
-easterEggModal.addEventListener('click', function (e) {
+  easterEggModal.addEventListener('click', function (e) {
     if (e.target === easterEggModal) {
-        easterEggModal.classList.remove('active')
+      easterEggModal.classList.remove('opacity-100');
+      easterEggModal.classList.add('pointer-events-none');
     }
-})
+  });
+});

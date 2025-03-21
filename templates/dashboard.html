@@ -1,293 +1,130 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Disponibilidad - Horarios Optimizados</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de Horarios</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/dashboard.css') }}"
     />
-</head>
-<body class="bg-gray-100 min-h-screen">
-<!-- Header -->
-<div class="header-bg p-8 text-white text-center">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 flex justify-center items-center">
-        <i class="fas fa-calendar-alt mr-4"></i>
-        Sistema de Disponibilidad
-    </h1>
-    <p class="text-xl opacity-90 max-w-3xl mx-auto">
-        Organización de horarios basados en la disponibilidad del profesorado
-    </p>
-</div>
-<div class="container mx-auto px-4 py-8">
-    <!-- Import Data Section -->
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-            <i class="fas fa-file-import mr-3 text-blue-600"></i>Importar Datos de Disponibilidad
-        </h2>
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Subir archivo CSV de disponibilidad</label>
-            <input type="file" id="csvFile" accept="document/*, .csv, .xls, .xlsx, .xlsm"
-                   class="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div class="flex flex-wrap gap-4">
-            <button id="importBtn"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300 btn-glow flex items-center">
-                <i class="fas fa-upload mr-2"></i>
-                Importar Datos
-            </button>
-            <button id="generarHorarioBtn"
-                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-all duration-300 btn-glow flex items-center">
-                <i class="fas fa-magic mr-2"></i>
-                Generar Horario Óptimo
-            </button>
-        </div>
-    </div>
-    <!-- Two Columns Layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Disponibilidad Table -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-                <i class="fas fa-user-clock mr-3 text-blue-600"></i>Disponibilidad del Profesorado
-            </h2>
-            <div class="overflow-x-auto">
-                <table id="tablaDisponibilidad" class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Profesor
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Ciclo
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            8:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            9:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            10:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            11:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            12:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            13:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            14:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            15:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            16:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            17:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            18:00
-                        </th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            19:00
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200" id="tablaDisponibilidadBody">
-                    <!-- Data will be loaded here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- Horario Optimizado -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-                <i class="fas fa-calendar-check mr-3 text-blue-600"></i>Horario Optimizado
-            </h2>
-            <div class="flex gap-2 mb-4 flex-wrap">
-                <button id="filtrarTodosBtn"
-                        class="bg-gray-200 text-gray-800 px-3 py-1 rounded-md hover:bg-gray-300 text-sm transition-all duration-200">
-                    Todos
-                </button>
-                <select id="filtroCiclo"
-                        class="border border-gray-300 rounded-md text-sm px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                    <option value="">Todos los ciclos</option>
-                </select>
-            </div>
-            <div class="overflow-x-auto">
-                <div class="overflow-x-auto">
-                    <div id="horarioOptimizado" class="grid-horario gap-1 mb-6">
-                        <div class="bg-blue-100 p-2 text-center font-medium text-blue-800">Hora</div>
-                        <div class="bg-blue-100 p-2 text-center font-medium text-blue-800">Lunes</div>
-                        <div class="bg-blue-100 p-2 text-center font-medium text-blue-800">Martes</div>
-                        <div class="bg-blue-100 p-2 text-center font-medium text-blue-800">Miércoles</div>
-                        <div class="bg-blue-100 p-2 text-center font-medium text-blue-800">Jueves</div>
-                        <div class="bg-blue-100 p-2 text-center font-medium text-blue-800">Viernes</div>
-                        <!-- 8:00 -->
-                        <div class="bg-gray-100 p-2 text-center">8:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-8"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-8"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-8"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-8"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-8"></div>
-                        <!-- 9:00 -->
-                        <div class="bg-gray-100 p-2 text-center">9:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-9"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-9"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-9"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-9"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-9"></div>
-                        <!-- 10:00 -->
-                        <div class="bg-gray-100 p-2 text-center">10:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-10"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-10"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-10"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-10"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-10"></div>
-                        <!-- 11:00 -->
-                        <div class="bg-gray-100 p-2 text-center">11:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-11"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-11"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-11"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-11"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-11"></div>
-                        <!-- 12:00 -->
-                        <div class="bg-gray-100 p-2 text-center">12:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-12"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-12"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-12"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-12"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-12"></div>
-                        <!-- 13:00 -->
-                        <div class="bg-gray-100 p-2 text-center">13:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-13"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-13"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-13"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-13"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-13"></div>
-                        <!-- 14:00 -->
-                        <div class="bg-gray-100 p-2 text-center">14:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-14"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-14"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-14"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-14"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-14"></div>
-                        <!-- 15:00 -->
-                        <div class="bg-gray-100 p-2 text-center">15:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-15"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-15"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-15"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-15"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-15"></div>
-                        <!-- 16:00 -->
-                        <div class="bg-gray-100 p-2 text-center">16:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-16"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-16"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-16"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-16"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-16"></div>
-                        <!-- 17:00 -->
-                        <div class="bg-gray-100 p-2 text-center">17:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-17"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-17"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-17"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-17"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-17"></div>
-                        <!-- 18:00 -->
-                        <div class="bg-gray-100 p-2 text-center">18:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-18"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-18"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-18"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-18"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-18"></div>
-                        <!-- 19:00 -->
-                        <div class="bg-gray-100 p-2 text-center">19:00</div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="lun-19"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mar-19"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="mie-19"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="jue-19"></div>
-                        <div class="bg-white p-2 text-center border border-gray-200" id="vie-19"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mt-4">
-            <button id="exportarBtn"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300 btn-glow flex items-center">
-                <i class="fas fa-file-export mr-2"></i>
-                Exportar Horario
-            </button>
-        </div>
-    </div>
-</div>
-<!-- Statistics Section -->
-<div class="mt-8 bg-white rounded-xl shadow-lg p-6">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-        <i class="fas fa-chart-bar mr-3 text-blue-600"></i>Estadísticas de Optimización
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-            <h3 class="text-lg font-medium text-blue-800 mb-2 flex items-center">
-                <i class="fas fa-smile mr-2"></i>Nivel de Satisfacción
-            </h3>
-            <p class="text-2xl font-bold text-blue-900" id="nivelSatisfaccion">-</p>
-            <p class="text-sm text-blue-700">Porcentaje de preferencias satisfechas</p>
-        </div>
-        <div class="bg-green-50 p-4 rounded-lg border border-green-100">
-            <h3 class="text-lg font-medium text-green-800 mb-2 flex items-center">
-                <i class="fas fa-clipboard-check mr-2"></i>Horarios Cubiertos
-            </h3>
-            <p class="text-2xl font-bold text-green-900" id="horariosCubiertos">-</p>
-            <p class="text-sm text-green-700">Total de franjas horarias asignadas</p>
-        </div>
-        <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
-            <h3 class="text-lg font-medium text-purple-800 mb-2 flex items-center">
-                <i class="fas fa-users mr-2"></i>Distribución de Ciclos
-            </h3>
-            <p class="text-2xl font-bold text-purple-900" id="distribucionCiclos">-</p>
-            <p class="text-sm text-purple-700">Asignaciones por ciclo formativo</p>
-        </div>
-    </div>
-</div>
-</div>
-<!-- Footer -->
-<div class="bg-gray-50 p-6 text-center text-gray-500 border-t border-gray-200 mt-8">
-    <p>© 2024 Sistema de Disponibilidad. Todos los derechos reservados.</p>
-</div>
-<!-- ASCII signature at the bottom -->
-<div class="text-center p-4">
-         <pre class="ascii-tag text-xs inline-block text-left">
-         ██████╗  █████╗ ██████╗ ██╗      ██████╗
-         ██╔══██╗██╔══██╗██╔══██╗██║     ██╔═══██╗
-         ██████╔╝███████║██████╔╝██║     ██║   ██║
-         ██╔═══╝ ██╔══██║██╔══██╗██║     ██║   ██║
-         ██║     ██║  ██║██████╔╝███████╗╚██████╔╝
-         ╚═╝     ╚═╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-6">
+        Dashboard de Horarios
+      </h1>
 
-                     /\      /\      /\      /\
-                    /  \    /  \    /  \    /  \
-                   /    \  /    \  /    \  /    \
-                  /      \/      \/      \/      \
-                 /|      ||      ||      ||      |\
-                / |      ||      ||      ||      | \
-               /  |      ||      ||      ||      |  \
-              /   |      ||      ||      ||      |   \
-             /    |      ||      ||      ||      |    \
-            /     |______||______||______||______|     \
-           /                                            \
-          /____________________________________________\
-        </pre>
-    <p class="text-gray-400 text-sm">Desarrollado por Pablo</p>
-</div>
-<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-</body>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Tabla de Horarios -->
+        <div class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-semibold text-gray-700 mb-4">
+            Horario Semanal
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="min-w-full border-collapse">
+              <thead>
+                <tr>
+                  <th class="p-3 border border-gray-300 bg-gray-50">Hora</th>
+                  <th class="p-3 border border-gray-300 bg-gray-50">Lunes</th>
+                  <th class="p-3 border border-gray-300 bg-gray-50">Martes</th>
+                  <th class="p-3 border border-gray-300 bg-gray-50">
+                    Miércoles
+                  </th>
+                  <th class="p-3 border border-gray-300 bg-gray-50">Jueves</th>
+                  <th class="p-3 border border-gray-300 bg-gray-50">Viernes</th>
+                </tr>
+              </thead>
+              <tbody id="horario-tbody">
+                <!-- Se llenará con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Acciones y Estadísticas -->
+        <div class="md:col-span-1">
+          <!-- Card de Acciones -->
+          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Acciones</h2>
+            <div class="flex flex-col space-y-3">
+              <button
+                id="btn-exportar"
+                class="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 mr-2"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Exportar Horario
+              </button>
+              <button
+                id="btn-optimizar"
+                class="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition duration-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 mr-2"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                  <path d="M9 16l2 2 4-4"></path>
+                </svg>
+                Generar Horario Optimizado
+              </button>
+            </div>
+          </div>
+
+          <!-- Card de Estadísticas -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">
+              Estadísticas
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Disponibilidad total</p>
+                <div class="w-full bg-gray-200 rounded-full h-4">
+                  <div
+                    id="disponibilidad-barra"
+                    class="bg-green-500 h-4 rounded-full"
+                    style="width: 65%"
+                  ></div>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">
+                  <span id="disponibilidad-porcentaje">65</span>% disponible
+                </p>
+              </div>
+
+              <div>
+                <p class="text-sm text-gray-600 mb-2">Distribución por día</p>
+                <canvas id="chart-distribucion" height="150"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  </body>
 </html>
