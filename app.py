@@ -24,7 +24,6 @@ def submit_form():
         horas = request.form.getlist(horas_key)
         horario[dia] = horas
         
-    #recorre la tupla y muestra la informacion por dia y por hora
     for horario, dias in horario.items():
         for hora in horas:
             print(f'Dia: {dia}, Hora: {hora}')
