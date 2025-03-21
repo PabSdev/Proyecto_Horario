@@ -8,6 +8,21 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#00509e',
+              secondary: '#2873b9',
+              accent: '#f39200',
+              light: '#f5f7fa',
+              dark: '#333333',
+            },
+          },
+        },
+      };
+    </script>
     <title>Campus Cámara FP - Gestión de Horarios</title>
     <link
       rel="stylesheet"
@@ -249,6 +264,6 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/tailwind.config.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tailwind.js') }}"></script>
   </body>
 </html>

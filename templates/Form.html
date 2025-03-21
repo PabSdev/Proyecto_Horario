@@ -3,53 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <title>Campus Cámara FP - Formulario de Horarios</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/form.css') }}"
     />
-    <title>Campus Cámara FP - Formulario de Horarios</title>
   </head>
 
-  <body>
-    <div class="container">
-      <div class="form-container">
-        <div class="form-header">
-          <h2>Formulario de Gestión de Horarios</h2>
-          <p>Complete la información para optimizar su horario académico</p>
+  <body class="bg-light text-dark leading-relaxed">
+    <div class="w-[90%] max-w-7xl mx-auto py-8">
+      <div class="bg-white rounded-lg shadow-lg mt-8 overflow-hidden">
+        <div
+          class="bg-primary text-white p-6 text-center border-b-4 border-accent"
+        >
+          <h2 class="text-2xl font-bold mb-2">
+            Formulario de Gestión de Horarios
+          </h2>
+          <p class="opacity-90">
+            Complete la información para optimizar su horario académico
+          </p>
         </div>
 
         <form id="availabilityForm" action="/submit-form" method="post">
-          <div class="form-body">
+          <div class="p-8">
             <!-- Sección Información Personal -->
-            <div class="form-section">
-              <h3 class="form-section-title">Información Personal</h3>
-              <div class="form-row">
-                <div class="form-col form-col-6">
-                  <div class="form-group">
-                    <label for="nombre" class="form-label required"
-                      >Nombre</label
+            <div class="mb-8">
+              <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200">
+                Información Personal
+              </h3>
+              <div class="flex flex-wrap -mx-3">
+                <div class="w-full md:w-1/2 px-3 mb-6">
+                  <div class="mb-4">
+                    <label
+                      for="nombre"
+                      class="block mb-2 font-medium text-dark required"
                     >
+                      Nombre
+                    </label>
                     <input
                       type="text"
-                      class="form-control"
+                      class="w-full px-4 py-3 text-dark bg-white border border-gray-300 rounded focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/25"
                       id="nombre"
                       name="nombre"
                       required
                     />
                   </div>
                 </div>
-                <div class="form-col form-col-6">
-                  <div class="form-group">
-                    <label for="apellidos" class="form-label required"
-                      >Apellidos</label
+                <div class="w-full md:w-1/2 px-3 mb-6">
+                  <div class="mb-4">
+                    <label
+                      for="apellidos"
+                      class="block mb-2 font-medium text-dark required"
                     >
+                      Apellidos
+                    </label>
                     <input
                       type="text"
-                      class="form-control"
+                      class="w-full px-4 py-3 text-dark bg-white border border-gray-300 rounded focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/25"
                       id="apellidos"
                       name="apellidos"
                       required
@@ -58,26 +73,29 @@
                 </div>
               </div>
             </div>
+
             <!-- Sección Preferencias de Horario -->
-            <div class="form-section">
-              <h3 class="form-section-title">Preferencias de Horario</h3>
+            <div class="mb-8">
+              <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200">
+                Preferencias de Horario
+              </h3>
               <p class="mb-4">
                 Seleccione los días en los que está disponible y sus horas
                 preferidas:
               </p>
 
-              <div class="form-row">
-                <div class="form-col">
-                  <div class="days-selection">
+              <div class="flex flex-wrap -mx-3">
+                <div class="w-full px-3">
+                  <div class="flex flex-wrap gap-4">
                     <div class="form-check">
                       <input
                         type="checkbox"
                         id="lunes"
                         name="dias[]"
                         value="lunes"
-                        class="form-check-input day-checkbox"
+                        class="day-checkbox"
                       />
-                      <label for="lunes" class="form-check-label">Lunes</label>
+                      <label for="lunes" class="pl-1">Lunes</label>
                     </div>
                     <div class="form-check">
                       <input
@@ -85,11 +103,9 @@
                         id="martes"
                         name="dias[]"
                         value="martes"
-                        class="form-check-input day-checkbox"
+                        class="day-checkbox"
                       />
-                      <label for="martes" class="form-check-label"
-                        >Martes</label
-                      >
+                      <label for="martes" class="pl-1">Martes</label>
                     </div>
                     <div class="form-check">
                       <input
@@ -97,11 +113,9 @@
                         id="miercoles"
                         name="dias[]"
                         value="miercoles"
-                        class="form-check-input day-checkbox"
+                        class="day-checkbox"
                       />
-                      <label for="miercoles" class="form-check-label"
-                        >Miércoles</label
-                      >
+                      <label for="miercoles" class="pl-1">Miércoles</label>
                     </div>
                     <div class="form-check">
                       <input
@@ -109,11 +123,9 @@
                         id="jueves"
                         name="dias[]"
                         value="jueves"
-                        class="form-check-input day-checkbox"
+                        class="day-checkbox"
                       />
-                      <label for="jueves" class="form-check-label"
-                        >Jueves</label
-                      >
+                      <label for="jueves" class="pl-1">Jueves</label>
                     </div>
                     <div class="form-check">
                       <input
@@ -121,115 +133,182 @@
                         id="viernes"
                         name="dias[]"
                         value="viernes"
-                        class="form-check-input day-checkbox"
+                        class="day-checkbox"
                       />
-                      <label for="viernes" class="form-check-label"
-                        >Viernes</label
-                      >
+                      <label for="viernes" class="pl-1">Viernes</label>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div class="time-cards-container mt-4">
-                <div id="lunes-card" class="time-card" style="display: none">
-                  <h4>Horas Lunes</h4>
-                  <div id="lunes-hours" class="time-slots"></div>
+              <div class="mt-6">
+                <div
+                  id="lunes-card"
+                  class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                  style="display: none"
+                >
+                  <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                    Horas Lunes
+                  </h4>
+                  <div
+                    id="lunes-hours"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"
+                  ></div>
                 </div>
 
-                <div id="martes-card" class="time-card" style="display: none">
-                  <h4>Horas Martes</h4>
-                  <div id="martes-hours" class="time-slots"></div>
-                </div>
-
-                <div id="martes-card" class="time-card" style="display: none">
-                  <h4>Horas Martes</h4>
-                  <div id="martes-hours" class="time-slots"></div>
+                <div
+                  id="martes-card"
+                  class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                  style="display: none"
+                >
+                  <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                    Horas Martes
+                  </h4>
+                  <div
+                    id="martes-hours"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"
+                  ></div>
                 </div>
 
                 <div
                   id="miercoles-card"
-                  class="time-card"
+                  class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
                   style="display: none"
                 >
-                  <h4>Horas Miércoles</h4>
-                  <div id="miercoles-hours" class="time-slots"></div>
+                  <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                    Horas Miércoles
+                  </h4>
+                  <div
+                    id="miercoles-hours"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"
+                  ></div>
                 </div>
 
-                <div id="jueves-card" class="time-card" style="display: none">
-                  <h4>Horas Jueves</h4>
-                  <div id="jueves-hours" class="time-slots"></div>
+                <div
+                  id="jueves-card"
+                  class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                  style="display: none"
+                >
+                  <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                    Horas Jueves
+                  </h4>
+                  <div
+                    id="jueves-hours"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"
+                  ></div>
                 </div>
 
-                <div id="viernes-card" class="time-card" style="display: none">
-                  <h4>Horas Viernes</h4>
-                  <div id="viernes-hours" class="time-slots"></div>
+                <div
+                  id="viernes-card"
+                  class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                  style="display: none"
+                >
+                  <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                    Horas Viernes
+                  </h4>
+                  <div
+                    id="viernes-hours"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"
+                  ></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="form-footer">
+          <div
+            id="successMessage"
+            class="bg-green-100 text-green-700 p-4 text-center mb-4 hidden"
+          >
+            ¡Disponibilidad guardada correctamente! 🎉
+          </div>
+
+          <div class="bg-gray-50 p-6 text-right border-t border-gray-200">
             <a
               href="{{ url_for('landing_page') }}"
-              class="btn btn-secondary"
-              style="margin-right: 10px"
+              class="inline-block bg-secondary text-white px-6 py-3 rounded font-medium hover:bg-[#2367a7] transition-colors mr-2"
             >
               Cancelar
             </a>
-            <button type="submit" class="btn btn-accent" id="submit">
+            <button
+              type="submit"
+              class="inline-block bg-accent text-white px-6 py-3 rounded font-medium hover:bg-[#e08700] transition-colors"
+              id="submit"
+            >
               Enviar Solicitud
             </button>
-          </div>
           </div>
         </form>
       </div>
 
-      <div class="text-center mt-4 mb-4">
+      <div class="text-center mt-6 mb-6">
         <p>
           ¿Necesita ayuda para completar el formulario?
-          <a href="#" style="color: var(--primary)">Contacte con nosotros</a>
+          <a href="#" class="text-primary hover:underline"
+            >Contacte con nosotros</a
+          >
         </p>
       </div>
     </div>
 
-    <footer>
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Campus Cámara FP</h3>
-            <p>Tu centro de formación profesional de referencia en España.</p>
-            <div class="social-links">
-              <a href="#" class="social-icon"
-                ><i class="fab fa-facebook-f"></i
-              ></a>
-              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="social-icon"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="#" class="social-icon"
-                ><i class="fab fa-linkedin-in"></i
-              ></a>
+    <footer class="bg-dark text-white py-8">
+      <div class="w-[90%] max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-accent font-semibold mb-4">Campus Cámara FP</h3>
+            <p class="text-gray-400">
+              Tu centro de formación profesional de referencia en España.
+            </p>
+            <div class="flex gap-4 mt-4">
+              <a
+                href="#"
+                class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1"
+              >
+                <i class="fab fa-facebook-f text-white"></i>
+              </a>
+              <a
+                href="#"
+                class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1"
+              >
+                <i class="fab fa-twitter text-white"></i>
+              </a>
+              <a
+                href="#"
+                class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1"
+              >
+                <i class="fab fa-instagram text-white"></i>
+              </a>
+              <a
+                href="#"
+                class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1"
+              >
+                <i class="fab fa-linkedin-in text-white"></i>
+              </a>
             </div>
           </div>
-          <div class="footer-section">
-            <h3>Enlaces Rápidos</h3>
-            <a href="/">Inicio</a>
-            <a href="#">Contacto</a>
+          <div>
+            <h3 class="text-accent font-semibold mb-4">Enlaces Rápidos</h3>
+            <a href="/" class="text-gray-400 hover:text-white block mb-2"
+              >Inicio</a
+            >
+            <a href="#" class="text-gray-400 hover:text-white block mb-2"
+              >Contacto</a
+            >
           </div>
-          <div class="footer-section">
-            <h3>Contacto</h3>
-            <p>Dirección: Calle Principal, 123</p>
-            <p>Email: info@campuscamarafp.es</p>
-            <p>Teléfono: +34 123 456 789</p>
+          <div>
+            <h3 class="text-accent font-semibold mb-4">Contacto</h3>
+            <p class="text-gray-400">Dirección: Calle Principal, 123</p>
+            <p class="text-gray-400">Email: info@campuscamarafp.es</p>
+            <p class="text-gray-400">Teléfono: +34 123 456 789</p>
           </div>
         </div>
-        <div class="copyright">
+        <div
+          class="text-center border-t border-gray-700 pt-6 mt-6 text-gray-400"
+        >
           <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
 
     <script src="{{ url_for('static', filename='js/form.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tailwind.js') }}"></script>
   </body>
 </html>
