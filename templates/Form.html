@@ -158,153 +158,101 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-6 px-3">
-                    <div id="lunes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                         style="display: none">
-                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                            Horas Lunes
-                        </h4>
-                        <div id="lunes-hours"
-                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+
+                <!-- Sección de Resumen de Horarios Seleccionados -->
+                <div class="mb-8">
+                    <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200 flex items-center">
+                        <i class="fas fa-list-check text-accent mr-2"></i> Resumen de Horarios Seleccionados
+                    </h3>
+
+                    <div id="summary-container" class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+                        <div id="no-selection-message"
+                             class="text-gray-500 text-center py-8 flex flex-col items-center">
+                            <i class="fas fa-calendar-xmark text-gray-300 text-5xl mb-3"></i>
+                            <p>No se han seleccionado horarios todavía</p>
+                            <p class="text-sm mt-2">Marque las casillas en los días disponibles para ver el resumen
+                                aquí</p>
+                        </div>
+
+                        <div id="selections-summary" class="hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div id="lunes-summary" class="hidden">
+                                    <h4
+                                            class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Lunes
+                                    </h4>
+                                    <ul id="lunes-summary-list" class="list-none space-y-2"></ul>
+                                </div>
+
+                                <div id="martes-summary" class="hidden">
+                                    <h4
+                                            class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Martes
+                                    </h4>
+                                    <ul id="martes-summary-list" class="list-none space-y-2"></ul>
+                                </div>
+
+                                <div id="miercoles-summary" class="hidden">
+                                    <h4
+                                            class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Miércoles
+                                    </h4>
+                                    <ul id="miercoles-summary-list" class="list-none space-y-2"></ul>
+                                </div>
+
+                                <div id="jueves-summary" class="hidden">
+                                    <h4
+                                            class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Jueves
+                                    </h4>
+                                    <ul id="jueves-summary-list" class="list-none space-y-2"></ul>
+                                </div>
+
+                                <div id="viernes-summary" class="hidden">
+                                    <h4
+                                            class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Viernes
+                                    </h4>
+                                    <ul id="viernes-summary-list" class="list-none space-y-2"></ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="martes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                         style="display: none">
-                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                            Horas Martes
-                        </h4>
-                        <div id="martes-hours"
-                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
-                    </div>
-
-                    <div id="miercoles-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                         style="display: none">
-                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                            Horas Miércoles
-                        </h4>
-                        <div id="miercoles-hours"
-                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
-                    </div>
-
-                    <div id="jueves-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                         style="display: none">
-                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                            Horas Jueves
-                        </h4>
-                        <div id="jueves-hours"
-                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
-                    </div>
-
-                    <div id="viernes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                         style="display: none">
-                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                            Horas Viernes
-                        </h4>
-                        <div id="viernes-hours"
-                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
-                    </div>
-                </div>
-            </div>
-    </div>
-
-    <!-- Sección de Resumen de Horarios Seleccionados -->
-    <div class="mb-8">
-        <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200 flex items-center">
-            <i class="fas fa-list-check text-accent mr-2"></i> Resumen de Horarios Seleccionados
-        </h3>
-
-        <div id="summary-container" class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
-            <div id="no-selection-message" class="text-gray-500 text-center py-8 flex flex-col items-center">
-                <i class="fas fa-calendar-xmark text-gray-300 text-5xl mb-3"></i>
-                <p>No se han seleccionado horarios todavía</p>
-                <p class="text-sm mt-2">Marque las casillas en los días disponibles para ver el resumen aquí
-                </p>
-            </div>
-
-            <div id="selections-summary" class="hidden">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div id="lunes-summary" class="hidden">
-                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                            <i class="fas fa-calendar-day text-accent mr-2"></i> Lunes
-                        </h4>
-                        <ul id="lunes-summary-list" class="list-none space-y-2"></ul>
-                    </div>
-
-                    <div id="martes-summary" class="hidden">
-                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                            <i class="fas fa-calendar-day text-accent mr-2"></i> Martes
-                        </h4>
-                        <ul id="martes-summary-list" class="list-none space-y-2"></ul>
-                    </div>
-
-                    <div id="miercoles-summary" class="hidden">
-                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                            <i class="fas fa-calendar-day text-accent mr-2"></i> Miércoles
-                        </h4>
-                        <ul id="miercoles-summary-list" class="list-none space-y-2"></ul>
-                    </div>
-
-                    <div id="jueves-summary" class="hidden">
-                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                            <i class="fas fa-calendar-day text-accent mr-2"></i> Jueves
-                        </h4>
-                        <ul id="jueves-summary-list" class="list-none space-y-2"></ul>
-                    </div>
-
-                    <div id="viernes-summary" class="hidden">
-                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                            <i class="fas fa-calendar-day text-accent mr-2"></i> Viernes
-                        </h4>
-                        <ul id="viernes-summary-list" class="list-none space-y-2"></ul>
+                    <!-- Mensaje de confirmación para eliminar horas -->
+                    <div id="confirm-message"
+                         class="text-center mt-3 text-sm text-gray-600 hidden bg-blue-50 p-2 rounded-md border border-blue-100">
+                        <i class="fas fa-circle-info text-accent mr-1"></i>
+                        Haga clic en el botón <i class="fas fa-times text-red-500 mx-1"></i> para eliminar una hora
+                        seleccionada
                     </div>
                 </div>
+
+                <div id="successMessage" class="bg-green-100 text-green-700 p-4 text-center mb-4 hidden">
+                    ¡Disponibilidad guardada correctamente! 🎉
+                </div>
+
+                <div class="bg-gray-50 p-6 text-right border-t border-gray-200">
+                    <a href="{{ url_for('landing_page') }}"
+                       class="inline-block bg-secondary text-white px-6 py-3 rounded font-medium hover:bg-[#2367a7] transition-colors mr-2">
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                            class="inline-block bg-accent text-white px-6 py-3 rounded font-medium hover:bg-[#e08700] transition-colors"
+                            id="submit">
+                        Enviar Solicitud
+                    </button>
+                </div>
             </div>
-        </div>
-
-        <!-- Mensaje de confirmación para eliminar horas -->
-        <div id="confirm-message"
-             class="text-center mt-3 text-sm text-gray-600 hidden bg-blue-50 p-2 rounded-md border border-blue-100">
-            <i class="fas fa-circle-info text-accent mr-1"></i>
-            Haga clic en el botón <i class="fas fa-times text-red-500 mx-1"></i> para eliminar una hora
-            seleccionada
-        </div>
+        </form>
     </div>
 
-    <!-- Mensaje de confirmación para eliminar horas -->
-    <div id="confirm-message" class="text-center mt-2 text-sm text-gray-500 hidden">
-        <i class="fas fa-circle-info text-accent mr-1"></i>
-        Haga clic en el botón
-        <i class="fas fa-times text-red-500 mx-1">
-
-        </i> para eliminar una hora
-        seleccionada
+    <div class="text-center mt-6 mb-6">
+        <p>
+            ¿Necesita ayuda para completar el formulario?
+            <a href="#" class="text-primary hover:underline">Contacte con nosotros</a>
+        </p>
     </div>
-</div>
-
-<div id="successMessage" class="bg-green-100 text-green-700 p-4 text-center mb-4 hidden">
-    ¡Disponibilidad guardada correctamente! 🎉
-</div>
-
-<div class="bg-gray-50 p-6 text-right border-t border-gray-200">
-    <a href="{{ url_for('landing_page') }}"
-       class="inline-block bg-secondary text-white px-6 py-3 rounded font-medium hover:bg-[#2367a7] transition-colors mr-2">
-        Cancelar
-    </a>
-    <button type="submit"
-            class="inline-block bg-accent text-white px-6 py-3 rounded font-medium hover:bg-[#e08700] transition-colors"
-            id="submit">
-        Enviar Solicitud
-    </button>
-</div>
-</form>
-</div>
-
-<div class="text-center mt-6 mb-6">
-    <p>
-        ¿Necesita ayuda para completar el formulario?
-        <a href="#" class="text-primary hover:underline">Contacte con nosotros</a>
-    </p>
-</div>
 </div>
 
 <footer class="bg-dark text-white py-8">
