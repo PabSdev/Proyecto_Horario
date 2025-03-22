@@ -14,17 +14,17 @@ const generateHours = () => {
             const idValue = `${day}-${hourStr}${minuteStr}`;
 
             const hourBlock = `
-                <label class="form-check flex items-center gap-2 cursor-pointer">
-                    <input 
-                        type="checkbox" 
-                        id="${idValue}" 
-                        name="horas[${day}][]" 
-                        value="${timeValue}" 
-                        class="form-check-input hour-checkbox" 
+                <label class="form-check bg-white hover:bg-gray-50 p-2 rounded-md border border-gray-200 shadow-sm flex items-center gap-2 cursor-pointer transition-colors">
+                    <input
+                        type="checkbox"
+                        id="${idValue}"
+                        name="horas[${day}][]"
+                        value="${timeValue}"
+                        class="form-check-input hour-checkbox accent-primary"
                         data-day="${day}"
                         data-hour="${timeValue}"
                     />
-                    ${timeValue}
+                    <i class="fas fa-clock text-primary text-sm"></i> ${timeValue}
                 </label>
             `;
             container.insertAdjacentHTML('beforeend', hourBlock);
@@ -58,15 +58,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.querySelectorAll(`input[data-day="${day}"]`).forEach(hourCheckbox => {
                     hourCheckbox.checked = false;
                 });
+
+                // Actualizar el resumen cuando se deselecciona un día
+                updateSummary();
             }
         });
     });
 
-    // Enviar los datos al backend Flask
+    // Enviar los datos al backend Flask con mejor feedback
     document.getElementById('availabilityForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         const formData = new FormData(this);
+        const submitButton = document.getElementById('submit');
+        const successMessage = document.getElementById('successMessage');
+
+        // Deshabilitar el botón durante el envío
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
 
         fetch('/submit-form', {
             method: 'POST',
@@ -75,26 +84,41 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.message) {
-                    alert(data.message);
+                    // Mostrar mensaje de éxito
+                    successMessage.classList.remove('hidden');
+                    successMessage.scrollIntoView({behavior: 'smooth', block: 'center'});
+
+                    // Ocultar después de 5 segundos
+                    setTimeout(() => {
+                        successMessage.classList.add('hidden');
+                    }, 5000);
                 } else if (data.error) {
                     alert('Error: ' + data.error);
                 }
             })
-            .catch(error => console.error('Error al enviar:', error));
+            .catch(error => {
+                console.error('Error al enviar:', error);
+                alert('Ocurrió un error al procesar la solicitud');
+            })
+            .finally(() => {
+                // Restaurar el botón
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Enviar Solicitud';
+            });
     });
-});
 
+    // Añadir listeners para checkboxes de horas
+    document.querySelectorAll('.hour-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', updateSummary);
+    });
+
+    // Inicializar el resumen
+    updateSummary();
+});
 
 // Función mejorada para actualizar el resumen de horarios seleccionados
 function updateSummary() {
     const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
-    const dayNames = {
-        'lunes': 'Lunes',
-        'martes': 'Martes',
-        'miercoles': 'Miércoles',
-        'jueves': 'Jueves',
-        'viernes': 'Viernes'
-    };
     let anySelected = false;
 
     days.forEach(day => {
@@ -116,7 +140,7 @@ function updateSummary() {
             // Añadir cada hora a la lista con un botón para eliminar
             selectedHours.forEach(hour => {
                 const listItem = document.createElement('li');
-                listItem.className = 'flex justify-between items-center bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded transition-colors mb-2 border border-gray-200';
+                listItem.className = 'flex justify-between items-center bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-md transition-colors mb-2 border border-gray-200 shadow-sm';
 
                 const hourSpan = document.createElement('span');
                 hourSpan.className = 'flex items-center';
@@ -124,7 +148,7 @@ function updateSummary() {
 
                 const deleteButton = document.createElement('button');
                 deleteButton.type = 'button';
-                deleteButton.className = 'text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded-full transition-colors';
+                deleteButton.className = 'text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-full transition-colors';
                 deleteButton.innerHTML = '<i class="fas fa-times"></i>';
                 deleteButton.dataset.day = day;
                 deleteButton.dataset.hour = hour;
@@ -147,9 +171,11 @@ function updateSummary() {
     if (anySelected) {
         noSelectionMessage.classList.add('hidden');
         selectionsSummary.classList.remove('hidden');
+        toggleConfirmMessage(true);
     } else {
         noSelectionMessage.classList.remove('hidden');
         selectionsSummary.classList.add('hidden');
+        toggleConfirmMessage(false);
     }
 }
 
@@ -175,19 +201,7 @@ function removeHourSelection(e) {
     }, 300);
 }
 
-// Añadir event listeners para los checkboxes de horas
-document.addEventListener('DOMContentLoaded', function () {
-    // Código existente...
-
-    // Añadir listeners para checkboxes de horas
-    document.querySelectorAll('.hour-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', updateSummary);
-    });
-
-    // Inicializar el resumen
-    updateSummary();
-});
-
+// Función para mostrar/ocultar el mensaje de confirmación
 function toggleConfirmMessage(show) {
     const confirmMessage = document.getElementById('confirm-message');
     if (show) {
@@ -197,6 +211,7 @@ function toggleConfirmMessage(show) {
     }
 }
 
-document.getElementById('submit').addEventListener('click', function () {
-    alert('Disponibilidad guardada correctamente!');
+// Eliminar el alert básico al enviar
+document.getElementById('submit').addEventListener('click', function (e) {
+    // El mensaje se maneja en el evento submit del formulario
 });

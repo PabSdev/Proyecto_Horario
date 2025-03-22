@@ -2,291 +2,358 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <title>Campus Cámara FP - Formulario de Horarios</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}"/>
 </head>
 
 <body class="bg-light text-dark leading-relaxed">
-    <div class="w-[90%] max-w-7xl mx-auto py-8">
-        <div class="bg-white rounded-lg shadow-lg mt-8 overflow-hidden">
-            <div class="bg-primary text-white p-6 text-center border-b-4 border-accent">
-                <h2 class="text-2xl font-bold mb-2">
-                    Formulario de Gestión de Horarios
-                </h2>
-                <p class="opacity-90">
-                    Complete la información para optimizar su horario académico
+<div class="w-[90%] max-w-7xl mx-auto py-8">
+    <div class="bg-white rounded-lg shadow-lg mt-8 overflow-hidden">
+        <div class="bg-primary text-white p-6 text-center border-b-4 border-accent">
+            <h2 class="text-2xl font-bold mb-2">
+                Formulario de Gestión de Horarios
+            </h2>
+            <p class="opacity-90">
+                Complete la información para optimizar su horario académico
+            </p>
+        </div>
+
+        <form id="availabilityForm" action="/submit-form" method="post">
+            <div class="p-8">
+                <!-- Sección Información Personal -->
+                <div class="mb-8">
+                    <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200">
+                        Información Personal
+                    </h3>
+                    <div class="flex flex-wrap -mx-3">
+                        <div class="w-full md:w-1/2 px-3 mb-6">
+                            <div class="mb-4">
+                                <label for="nombre" class="block mb-2 font-medium text-dark required">
+                                    Nombre
+                                </label>
+                                <input type="text"
+                                       class="w-full px-4 py-3 text-dark bg-white border border-gray-300 rounded focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/25"
+                                       id="nombre" name="nombre" required/>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6">
+                            <div class="mb-4">
+                                <label for="apellidos" class="block mb-2 font-medium text-dark required">
+                                    Apellidos
+                                </label>
+                                <input type="text"
+                                       class="w-full px-4 py-3 text-dark bg-white border border-gray-300 rounded focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/25"
+                                       id="apellidos" name="apellidos" required/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Disponibilidad -->
+                <div class="mb-8">
+                    <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200 flex items-center">
+                        <i class="fas fa-calendar-week text-accent mr-2"></i> Seleccione Días Disponibles
+                    </h3>
+
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <div
+                                class="form-check flex items-center bg-white px-4 py-3 rounded-lg border border-gray-200 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-md">
+                            <input type="checkbox" id="lunes" name="dias[]" value="lunes"
+                                   class="day-checkbox mr-2 accent-primary h-4 w-4"/>
+                            <label for="lunes"
+                                   class="flex items-center cursor-pointer transition-colors duration-300">
+                                <i class="fas fa-calendar-day text-primary mr-2"></i> Lunes
+                            </label>
+                        </div>
+
+                        <div
+                                class="form-check flex items-center bg-white px-4 py-3 rounded-lg border border-gray-200 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-md">
+                            <input type="checkbox" id="martes" name="dias[]" value="martes"
+                                   class="day-checkbox mr-2 accent-primary h-4 w-4"/>
+                            <label for="martes"
+                                   class="flex items-center cursor-pointer transition-colors duration-300">
+                                <i class="fas fa-calendar-day text-primary mr-2"></i> Martes
+                            </label>
+                        </div>
+
+                        <div
+                                class="form-check flex items-center bg-white px-4 py-3 rounded-lg border border-gray-200 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-md">
+                            <input type="checkbox" id="miercoles" name="dias[]" value="miercoles"
+                                   class="day-checkbox mr-2 accent-primary h-4 w-4"/>
+                            <label for="miercoles"
+                                   class="flex items-center cursor-pointer transition-colors duration-300">
+                                <i class="fas fa-calendar-day text-primary mr-2"></i> Miércoles
+                            </label>
+                        </div>
+
+                        <div
+                                class="form-check flex items-center bg-white px-4 py-3 rounded-lg border border-gray-200 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-md">
+                            <input type="checkbox" id="jueves" name="dias[]" value="jueves"
+                                   class="day-checkbox mr-2 accent-primary h-4 w-4"/>
+                            <label for="jueves"
+                                   class="flex items-center cursor-pointer transition-colors duration-300">
+                                <i class="fas fa-calendar-day text-primary mr-2"></i> Jueves
+                            </label>
+                        </div>
+
+                        <div
+                                class="form-check flex items-center bg-white px-4 py-3 rounded-lg border border-gray-200 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-md">
+                            <input type="checkbox" id="viernes" name="dias[]" value="viernes"
+                                   class="day-checkbox mr-2 accent-primary h-4 w-4"/>
+                            <label for="viernes"
+                                   class="flex items-center cursor-pointer transition-colors duration-300">
+                                <i class="fas fa-calendar-day text-primary mr-2"></i> Viernes
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 px-3">
+                        <div id="lunes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                             style="display: none">
+                            <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                                Horas Lunes
+                            </h4>
+                            <div id="lunes-hours"
+                                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                        </div>
+
+                        <div id="martes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                             style="display: none">
+                            <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                                Horas Martes
+                            </h4>
+                            <div id="martes-hours"
+                                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                        </div>
+
+                        <div id="miercoles-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                             style="display: none">
+                            <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                                Horas Miércoles
+                            </h4>
+                            <div id="miercoles-hours"
+                                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                        </div>
+
+                        <div id="jueves-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                             style="display: none">
+                            <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                                Horas Jueves
+                            </h4>
+                            <div id="jueves-hours"
+                                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                        </div>
+
+                        <div id="viernes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                             style="display: none">
+                            <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                                Horas Viernes
+                            </h4>
+                            <div id="viernes-hours"
+                                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 px-3">
+                    <div id="lunes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                         style="display: none">
+                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                            Horas Lunes
+                        </h4>
+                        <div id="lunes-hours"
+                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                    </div>
+
+                    <div id="martes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                         style="display: none">
+                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                            Horas Martes
+                        </h4>
+                        <div id="martes-hours"
+                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                    </div>
+
+                    <div id="miercoles-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                         style="display: none">
+                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                            Horas Miércoles
+                        </h4>
+                        <div id="miercoles-hours"
+                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                    </div>
+
+                    <div id="jueves-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                         style="display: none">
+                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                            Horas Jueves
+                        </h4>
+                        <div id="jueves-hours"
+                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                    </div>
+
+                    <div id="viernes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
+                         style="display: none">
+                        <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
+                            Horas Viernes
+                        </h4>
+                        <div id="viernes-hours"
+                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!-- Sección de Resumen de Horarios Seleccionados -->
+    <div class="mb-8">
+        <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200 flex items-center">
+            <i class="fas fa-list-check text-accent mr-2"></i> Resumen de Horarios Seleccionados
+        </h3>
+
+        <div id="summary-container" class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+            <div id="no-selection-message" class="text-gray-500 text-center py-8 flex flex-col items-center">
+                <i class="fas fa-calendar-xmark text-gray-300 text-5xl mb-3"></i>
+                <p>No se han seleccionado horarios todavía</p>
+                <p class="text-sm mt-2">Marque las casillas en los días disponibles para ver el resumen aquí
                 </p>
             </div>
 
-            <form id="availabilityForm" action="/submit-form" method="post">
-                <div class="p-8">
-                    <!-- Sección Información Personal -->
-                    <div class="mb-8">
-                        <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200">
-                            Información Personal
-                        </h3>
-                        <div class="flex flex-wrap -mx-3">
-                            <div class="w-full md:w-1/2 px-3 mb-6">
-                                <div class="mb-4">
-                                    <label for="nombre" class="block mb-2 font-medium text-dark required">
-                                        Nombre
-                                    </label>
-                                    <input type="text"
-                                        class="w-full px-4 py-3 text-dark bg-white border border-gray-300 rounded focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/25"
-                                        id="nombre" name="nombre" required />
-                                </div>
-                            </div>
-                            <div class="w-full md:w-1/2 px-3 mb-6">
-                                <div class="mb-4">
-                                    <label for="apellidos" class="block mb-2 font-medium text-dark required">
-                                        Apellidos
-                                    </label>
-                                    <input type="text"
-                                        class="w-full px-4 py-3 text-dark bg-white border border-gray-300 rounded focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/25"
-                                        id="apellidos" name="apellidos" required />
-                                </div>
-                            </div>
-                        </div>
+            <div id="selections-summary" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div id="lunes-summary" class="hidden">
+                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                            <i class="fas fa-calendar-day text-accent mr-2"></i> Lunes
+                        </h4>
+                        <ul id="lunes-summary-list" class="list-none space-y-2"></ul>
                     </div>
 
-                    <!-- Sección Preferencias de Horario -->
-                    <div class="mb-8">
-                        <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200">
-                            Preferencias de Horario
-                        </h3>
-                        <p class="mb-4">
-                            Seleccione los días en los que está disponible y sus horas
-                            preferidas:
-                        </p>
-
-                        <div class="flex flex-wrap -mx-3">
-                            <div class="w-full px-3">
-                                <div class="flex flex-wrap gap-4">
-                                    <div class="form-check">
-                                        <input type="checkbox" id="lunes" name="dias[]" value="lunes"
-                                            class="day-checkbox" />
-                                        <label for="lunes" class="pl-1">Lunes</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="martes" name="dias[]" value="martes"
-                                            class="day-checkbox" />
-                                        <label for="martes" class="pl-1">Martes</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="miercoles" name="dias[]" value="miercoles"
-                                            class="day-checkbox" />
-                                        <label for="miercoles" class="pl-1">Miércoles</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="jueves" name="dias[]" value="jueves"
-                                            class="day-checkbox" />
-                                        <label for="jueves" class="pl-1">Jueves</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="viernes" name="dias[]" value="viernes"
-                                            class="day-checkbox" />
-                                        <label for="viernes" class="pl-1">Viernes</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-6 px-3">
-                            <div id="lunes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                                style="display: none">
-                                <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                                    Horas Lunes
-                                </h4>
-                                <div id="lunes-hours"
-                                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
-                            </div>
-
-                            <div id="martes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                                style="display: none">
-                                <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                                    Horas Martes
-                                </h4>
-                                <div id="martes-hours"
-                                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
-                            </div>
-
-                            <div id="miercoles-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                                style="display: none">
-                                <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                                    Horas Miércoles
-                                </h4>
-                                <div id="miercoles-hours"
-                                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
-                            </div>
-
-                            <div id="jueves-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                                style="display: none">
-                                <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                                    Horas Jueves
-                                </h4>
-                                <div id="jueves-hours"
-                                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
-                            </div>
-
-                            <div id="viernes-card" class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4"
-                                style="display: none">
-                                <h4 class="text-primary mb-4 pb-2 border-b border-gray-200">
-                                    Horas Viernes
-                                </h4>
-                                <div id="viernes-hours"
-                                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Nueva sección de resumen de selección mejorada -->
-                <div class="mb-8 mt-6">
-                    <h3 class="font-semibold mb-4 pb-2 border-b border-gray-200 flex items-center">
-                        <i class="fas fa-list-check text-accent mr-2"></i> Resumen de Horarios Seleccionados
-                    </h3>
-
-                    <div id="summary-container" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                        <div id="no-selection-message"
-                            class="text-gray-500 text-center py-6 flex flex-col items-center">
-                            <i class="fas fa-calendar-xmark text-gray-300 text-5xl mb-3"></i>
-                            <p>No se han seleccionado horarios todavía</p>
-                            <p class="text-sm mt-2">Marque las casillas en los días disponibles para ver el resumen aquí
-                            </p>
-                        </div>
-
-                        <div id="selections-summary" class="hidden">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <div id="lunes-summary" class="hidden">
-                                    <h4
-                                        class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Lunes
-                                    </h4>
-                                    <ul id="lunes-summary-list" class="list-none space-y-1"></ul>
-                                </div>
-
-                                <div id="martes-summary" class="hidden">
-                                    <h4
-                                        class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Martes
-                                    </h4>
-                                    <ul id="martes-summary-list" class="list-none space-y-1"></ul>
-                                </div>
-
-                                <div id="miercoles-summary" class="hidden">
-                                    <h4
-                                        class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Miércoles
-                                    </h4>
-                                    <ul id="miercoles-summary-list" class="list-none space-y-1"></ul>
-                                </div>
-
-                                <div id="jueves-summary" class="hidden">
-                                    <h4
-                                        class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Jueves
-                                    </h4>
-                                    <ul id="jueves-summary-list" class="list-none space-y-1"></ul>
-                                </div>
-
-                                <div id="viernes-summary" class="hidden">
-                                    <h4
-                                        class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
-                                        <i class="fas fa-calendar-day text-accent mr-2"></i> Viernes
-                                    </h4>
-                                    <ul id="viernes-summary-list" class="list-none space-y-1"></ul>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="martes-summary" class="hidden">
+                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                            <i class="fas fa-calendar-day text-accent mr-2"></i> Martes
+                        </h4>
+                        <ul id="martes-summary-list" class="list-none space-y-2"></ul>
                     </div>
 
-                    <!-- Mensaje de confirmación para eliminar horas -->
-                    <div id="confirm-message" class="text-center mt-2 text-sm text-gray-500 hidden">
-                        <i class="fas fa-circle-info text-accent mr-1"></i>
-                        Haga clic en el botón
-                        <i class="fas fa-times text-red-500 mx-1">
+                    <div id="miercoles-summary" class="hidden">
+                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                            <i class="fas fa-calendar-day text-accent mr-2"></i> Miércoles
+                        </h4>
+                        <ul id="miercoles-summary-list" class="list-none space-y-2"></ul>
+                    </div>
 
-                        </i> para eliminar una hora
-                        seleccionada
+                    <div id="jueves-summary" class="hidden">
+                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                            <i class="fas fa-calendar-day text-accent mr-2"></i> Jueves
+                        </h4>
+                        <ul id="jueves-summary-list" class="list-none space-y-2"></ul>
+                    </div>
+
+                    <div id="viernes-summary" class="hidden">
+                        <h4 class="text-primary font-medium mb-3 border-b border-gray-100 pb-2 flex items-center">
+                            <i class="fas fa-calendar-day text-accent mr-2"></i> Viernes
+                        </h4>
+                        <ul id="viernes-summary-list" class="list-none space-y-2"></ul>
                     </div>
                 </div>
-
-                <div id="successMessage" class="bg-green-100 text-green-700 p-4 text-center mb-4 hidden">
-                    ¡Disponibilidad guardada correctamente! 🎉
-                </div>
-
-                <div class="bg-gray-50 p-6 text-right border-t border-gray-200">
-                    <a href="{{ url_for('landing_page') }}"
-                        class="inline-block bg-secondary text-white px-6 py-3 rounded font-medium hover:bg-[#2367a7] transition-colors mr-2">
-                        Cancelar
-                    </a>
-                    <button type="submit"
-                        class="inline-block bg-accent text-white px-6 py-3 rounded font-medium hover:bg-[#e08700] transition-colors"
-                        id="submit">
-                        Enviar Solicitud
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
 
-        <div class="text-center mt-6 mb-6">
-            <p>
-                ¿Necesita ayuda para completar el formulario?
-                <a href="#" class="text-primary hover:underline">Contacte con nosotros</a>
-            </p>
+        <!-- Mensaje de confirmación para eliminar horas -->
+        <div id="confirm-message"
+             class="text-center mt-3 text-sm text-gray-600 hidden bg-blue-50 p-2 rounded-md border border-blue-100">
+            <i class="fas fa-circle-info text-accent mr-1"></i>
+            Haga clic en el botón <i class="fas fa-times text-red-500 mx-1"></i> para eliminar una hora
+            seleccionada
         </div>
     </div>
 
-    <footer class="bg-dark text-white py-8">
-        <div class="w-[90%] max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-accent font-semibold mb-4">Campus Cámara FP</h3>
-                    <p class="text-gray-400">
-                        Tu centro de formación profesional de referencia en España.
-                    </p>
-                    <div class="flex gap-4 mt-4">
-                        <a href="#"
-                            class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
-                            <i class="fab fa-facebook-f text-white"></i>
-                        </a>
-                        <a href="#"
-                            class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
-                            <i class="fab fa-twitter text-white"></i>
-                        </a>
-                        <a href="#"
-                            class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
-                            <i class="fab fa-instagram text-white"></i>
-                        </a>
-                        <a href="#"
-                            class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
-                            <i class="fab fa-linkedin-in text-white"></i>
-                        </a>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-accent font-semibold mb-4">Enlaces Rápidos</h3>
-                    <a href="/" class="text-gray-400 hover:text-white block mb-2">Inicio</a>
-                    <a href="#" class="text-gray-400 hover:text-white block mb-2">Contacto</a>
-                </div>
-                <div>
-                    <h3 class="text-accent font-semibold mb-4">Contacto</h3>
-                    <p class="text-gray-400">Dirección: Calle Principal, 123</p>
-                    <p class="text-gray-400">Email: info@campuscamarafp.es</p>
-                    <p class="text-gray-400">Teléfono: +34 123 456 789</p>
+    <!-- Mensaje de confirmación para eliminar horas -->
+    <div id="confirm-message" class="text-center mt-2 text-sm text-gray-500 hidden">
+        <i class="fas fa-circle-info text-accent mr-1"></i>
+        Haga clic en el botón
+        <i class="fas fa-times text-red-500 mx-1">
+
+        </i> para eliminar una hora
+        seleccionada
+    </div>
+</div>
+
+<div id="successMessage" class="bg-green-100 text-green-700 p-4 text-center mb-4 hidden">
+    ¡Disponibilidad guardada correctamente! 🎉
+</div>
+
+<div class="bg-gray-50 p-6 text-right border-t border-gray-200">
+    <a href="{{ url_for('landing_page') }}"
+       class="inline-block bg-secondary text-white px-6 py-3 rounded font-medium hover:bg-[#2367a7] transition-colors mr-2">
+        Cancelar
+    </a>
+    <button type="submit"
+            class="inline-block bg-accent text-white px-6 py-3 rounded font-medium hover:bg-[#e08700] transition-colors"
+            id="submit">
+        Enviar Solicitud
+    </button>
+</div>
+</form>
+</div>
+
+<div class="text-center mt-6 mb-6">
+    <p>
+        ¿Necesita ayuda para completar el formulario?
+        <a href="#" class="text-primary hover:underline">Contacte con nosotros</a>
+    </p>
+</div>
+</div>
+
+<footer class="bg-dark text-white py-8">
+    <div class="w-[90%] max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-accent font-semibold mb-4">Campus Cámara FP</h3>
+                <p class="text-gray-400">
+                    Tu centro de formación profesional de referencia en España.
+                </p>
+                <div class="flex gap-4 mt-4">
+                    <a href="#"
+                       class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                        <i class="fab fa-facebook-f text-white"></i>
+                    </a>
+                    <a href="#"
+                       class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                        <i class="fab fa-twitter text-white"></i>
+                    </a>
+                    <a href="#"
+                       class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                        <i class="fab fa-instagram text-white"></i>
+                    </a>
+                    <a href="#"
+                       class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                        <i class="fab fa-linkedin-in text-white"></i>
+                    </a>
                 </div>
             </div>
-            <div class="text-center border-t border-gray-700 pt-6 mt-6 text-gray-400">
-                <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
+            <div>
+                <h3 class="text-accent font-semibold mb-4">Enlaces Rápidos</h3>
+                <a href="/" class="text-gray-400 hover:text-white block mb-2">Inicio</a>
+                <a href="#" class="text-gray-400 hover:text-white block mb-2">Contacto</a>
+            </div>
+            <div>
+                <h3 class="text-accent font-semibold mb-4">Contacto</h3>
+                <p class="text-gray-400">Dirección: Calle Principal, 123</p>
+                <p class="text-gray-400">Email: info@campuscamarafp.es</p>
+                <p class="text-gray-400">Teléfono: +34 123 456 789</p>
             </div>
         </div>
-    </footer>
+        <div class="text-center border-t border-gray-700 pt-6 mt-6 text-gray-400">
+            <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
 
-    <script src="{{ url_for('static', filename='js/form.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/tailwind.js') }}"></script>
+<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tailwind.js') }}"></script>
 </body>
 
 </html>
