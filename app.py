@@ -1,6 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
+import database as db
 
 app = Flask(__name__)
+
+app.config['Debug'] = True
 
 
 @app.route('/')
@@ -14,20 +17,16 @@ def form():
 
 @app.route('/submit-form', methods=['POST'])
 def submit_form():
-    nombre = request.form['Nombre']
-    apellidos = request.form['Apellidos']
-    
-    dias = {}
-    
-    for dias in dias_seleccionados:
-        horas_key = f'horas[{dia}][]'
-        horas = request.form.getlist(horas_key)
-        horario[dia] = horas
-        
-    for horario, dias in horario.items():
-        for hora in horas:
-            print(f'Dia: {dia}, Hora: {hora}')
+    nombre = request.form['nombre']
+    apellidos = request.form['apellidos']
 
+    if nombre and apellidos:
+        db.upload_data(nombre, apellidos)
+    return redirect(url_for('Form'))
+
+        
+    
+    
 @app.route('/Dashboard')
 def dashboard():
     return render_template('dashboard.html')
