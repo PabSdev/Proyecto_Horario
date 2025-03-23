@@ -20,7 +20,7 @@ def upload_data(nombre, apellidos, Horario):
         )
         database.commit()
         print("✅ Datos insertados correctamente en la base de datos.")
-        return 'Data uploaded successfully'
     except mysql.connector.Error as err:
         print(f"❌ Error de MySQL: {err}")
-        return f'Error: {err}'
+
+

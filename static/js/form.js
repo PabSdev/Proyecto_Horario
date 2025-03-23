@@ -1,217 +1,171 @@
-const generateHours = () => {
-    const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
-    days.forEach((day) => {
-        const container = document.getElementById(`${day}-hours`);
-        container.innerHTML = ''; // Limpiar antes de agregar contenido
+const DAYS = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
+const WORKING_HOURS = { start: { hour: 15, minute: 30 }, end: { hour: 20, minute: 0 } };
 
-        let hour = 15;
-        let minutes = 30;
+const generateTimeSlots = () => {
+    const times = [];
+    let { hour, minute } = WORKING_HOURS.start;
 
-        while (true) {
-            const hourStr = hour.toString().padStart(2, '0');
-            const minuteStr = minutes.toString().padStart(2, '0');
-            const timeValue = `${hourStr}:${minuteStr}`;
-            const idValue = `${day}-${hourStr}${minuteStr}`;
+    while (true) {
+        const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        times.push(time);
 
-            const hourBlock = `
-                <label class="form-check bg-white hover:bg-gray-50 p-2 rounded-md border border-gray-200 shadow-sm flex items-center gap-2 cursor-pointer transition-colors">
-                    <input
-                        type="checkbox"
-                        id="${idValue}"
-                        name="horas[${day}][]"
-                        value="${timeValue}"
-                        class="form-check-input hour-checkbox accent-primary"
-                        data-day="${day}"
-                        data-hour="${timeValue}"
-                    />
-                    <i class="fas fa-clock text-primary text-sm"></i> ${timeValue}
-                </label>
-            `;
-            container.insertAdjacentHTML('beforeend', hourBlock);
+        if (hour === WORKING_HOURS.end.hour && minute === WORKING_HOURS.end.minute) break;
 
-            // Condición de parada después de mostrar 20:00
-            if (hour === 20 && minutes === 0) break;
-
-            // Sumar 1 hora
-            hour += 1;
-            if (hour === 20) {
-                minutes = 0;
-            }
+        hour += 1;
+        if (hour === WORKING_HOURS.end.hour) {
+            minute = WORKING_HOURS.end.minute;
         }
-    });
+    }
+
+    return times;
 };
 
-document.addEventListener('DOMContentLoaded', function () {
-    generateHours();
+const createTimeBlockHTML = (day, time) => {
+    const [hours, minutes] = time.split(':');
+    const id = `${day}-${hours}${minutes}`;
 
-    document.querySelectorAll('.day-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const day = this.value;
-            const timeCard = document.getElementById(`${day}-card`);
+    return `
+        <label class="form-check bg-white hover:bg-gray-50 p-2 rounded-md border border-gray-200 shadow-sm flex items-center gap-2 cursor-pointer transition-colors">
+            <input type="checkbox"
+                id="${id}"
+                name="horas[${day}][]"
+                value="${time}"
+                class="form-check-input hour-checkbox accent-primary"
+                data-day="${day}"
+                data-hour="${time}"
+            />
+            <i class="fas fa-clock text-primary text-sm"></i> ${time}
+        </label>
+    `;
+};
 
-            if (this.checked) {
-                timeCard.style.display = 'block';
-            } else {
-                timeCard.style.display = 'none';
+const initializeDaySelection = () => {
+    DAYS.forEach(day => {
+        const checkbox = document.querySelector(`.day-checkbox[value="${day}"]`);
+        const card = document.getElementById(`${day}-card`);
 
-                // Deseleccionar todas las horas si el día se deselecciona
-                document.querySelectorAll(`input[data-day="${day}"]`).forEach(hourCheckbox => {
-                    hourCheckbox.checked = false;
+        checkbox.addEventListener('change', () => {
+            card.style.display = checkbox.checked ? 'block' : 'none';
+
+            if (!checkbox.checked) {
+                document.querySelectorAll(`input[data-day="${day}"]`).forEach(input => {
+                    input.checked = false;
                 });
-
-                // Actualizar el resumen cuando se deselecciona un día
                 updateSummary();
             }
         });
     });
+};
 
-    // Enviar los datos al backend Flask con mejor feedback
-    document.getElementById('availabilityForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+const handleFormSubmission = () => {
+    const form = document.getElementById('availabilityForm');
+    const submitButton = document.getElementById('submit');
+    const successMessage = document.getElementById('successMessage');
 
-        const formData = new FormData(this);
-        const submitButton = document.getElementById('submit');
-        const successMessage = document.getElementById('successMessage');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-        // Deshabilitar el botón durante el envío
         submitButton.disabled = true;
         submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
 
-        fetch('/submit-form', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    // Mostrar mensaje de éxito
-                    successMessage.classList.remove('hidden');
-                    successMessage.scrollIntoView({behavior: 'smooth', block: 'center'});
-
-                    // Ocultar después de 5 segundos
-                    setTimeout(() => {
-                        successMessage.classList.add('hidden');
-                    }, 5000);
-                } else if (data.error) {
-                    alert('Error: ' + data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error al enviar:', error);
-                alert('Ocurrió un error al procesar la solicitud');
-            })
-            .finally(() => {
-                // Restaurar el botón
-                submitButton.disabled = false;
-                submitButton.innerHTML = 'Enviar Solicitud';
+        try {
+            const response = await fetch('/submit-form', {
+                method: 'POST',
+                body: new FormData(form)
             });
+
+            const data = await response.json();
+            if (data.message) {
+                successMessage.classList.remove('hidden');
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => successMessage.classList.add('hidden'), 5000);
+            } else if (data.error) {
+                alert('Error: ' + data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al procesar la solicitud');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Enviar Solicitud';
+        }
     });
+};
 
-    // Añadir listeners para checkboxes de horas
-    document.querySelectorAll('.hour-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', updateSummary);
+const setupHourSelection = () => {
+    DAYS.forEach(day => {
+        const container = document.getElementById(`${day}-hours`);
+        container.addEventListener('change', (e) => {
+            if (e.target.classList.contains('hour-checkbox')) {
+                updateSummary();
+            }
+        });
     });
+};
 
-    // Inicializar el resumen
-    updateSummary();
-});
+const updateSummary = () => {
+    let hasSelections = false;
 
-// Función mejorada para actualizar el resumen de horarios seleccionados
-function updateSummary() {
-    const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
-    let anySelected = false;
-
-    days.forEach(day => {
-        const summaryContainer = document.getElementById(`${day}-summary`);
+    DAYS.forEach(day => {
+        const checkboxes = [...document.querySelectorAll(`input[data-day="${day}"]:checked`)];
         const summaryList = document.getElementById(`${day}-summary-list`);
-        const checkboxes = document.querySelectorAll(`input[data-day="${day}"]:checked`);
-
-        // Limpiar la lista actual
         summaryList.innerHTML = '';
 
         if (checkboxes.length > 0) {
-            anySelected = true;
-            summaryContainer.classList.remove('hidden');
+            hasSelections = true;
+            document.getElementById(`${day}-summary`).classList.remove('hidden');
 
-            // Ordenar las horas seleccionadas
-            const selectedHours = Array.from(checkboxes).map(cb => cb.dataset.hour);
-            selectedHours.sort();
-
-            // Añadir cada hora a la lista con un botón para eliminar
-            selectedHours.forEach(hour => {
-                const listItem = document.createElement('li');
-                listItem.className = 'flex justify-between items-center bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-md transition-colors mb-2 border border-gray-200 shadow-sm';
-
-                const hourSpan = document.createElement('span');
-                hourSpan.className = 'flex items-center';
-                hourSpan.innerHTML = `<i class="fas fa-clock text-primary mr-2"></i> ${hour}`;
-
-                const deleteButton = document.createElement('button');
-                deleteButton.type = 'button';
-                deleteButton.className = 'text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-full transition-colors';
-                deleteButton.innerHTML = '<i class="fas fa-times"></i>';
-                deleteButton.dataset.day = day;
-                deleteButton.dataset.hour = hour;
-                deleteButton.addEventListener('click', removeHourSelection);
-                deleteButton.title = `Eliminar ${hour}`;
-
-                listItem.appendChild(hourSpan);
-                listItem.appendChild(deleteButton);
-                summaryList.appendChild(listItem);
-            });
+            checkboxes
+                .map(checkbox => checkbox.dataset.hour)
+                .sort()
+                .forEach(hour => {
+                    summaryList.insertAdjacentHTML('beforeend', `
+                        <li class="flex justify-between items-center bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-md transition-colors mb-2 border border-gray-200 shadow-sm">
+                            <span class="flex items-center">
+                                <i class="fas fa-clock text-primary mr-2"></i> ${hour}
+                            </span>
+                            <button type="button" 
+                                class="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-full transition-colors"
+                                data-day="${day}"
+                                data-hour="${hour}"
+                                onclick="removeHourSelection(event)"
+                                title="Eliminar ${hour}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </li>
+                    `);
+                });
         } else {
-            summaryContainer.classList.add('hidden');
+            document.getElementById(`${day}-summary`).classList.add('hidden');
         }
     });
 
-    // Mostrar/ocultar mensajes según si hay selecciones
-    const noSelectionMessage = document.getElementById('no-selection-message');
-    const selectionsSummary = document.getElementById('selections-summary');
+    document.getElementById('no-selection-message').classList.toggle('hidden', hasSelections);
+    document.getElementById('selections-summary').classList.toggle('hidden', !hasSelections);
+    document.getElementById('confirm-message').classList.toggle('hidden', !hasSelections);
+};
 
-    if (anySelected) {
-        noSelectionMessage.classList.add('hidden');
-        selectionsSummary.classList.remove('hidden');
-        toggleConfirmMessage(true);
-    } else {
-        noSelectionMessage.classList.remove('hidden');
-        selectionsSummary.classList.add('hidden');
-        toggleConfirmMessage(false);
-    }
-}
+const removeHourSelection = (e) => {
+    const { day, hour } = e.target.dataset;
+    const listItem = e.target.closest('li');
 
-// Función mejorada para eliminar una selección de hora con animación
-function removeHourSelection(e) {
-    const day = e.currentTarget.dataset.day;
-    const hour = e.currentTarget.dataset.hour;
-    const listItem = e.currentTarget.parentElement;
-
-    // Añadir animación de desvanecimiento
     listItem.classList.add('opacity-0');
-    listItem.style.transition = 'opacity 0.3s ease';
-
     setTimeout(() => {
-        // Encontrar y desmarcar el checkbox correspondiente
-        const checkbox = document.querySelector(`input[data-day="${day}"][data-hour="${hour}"]`);
-        if (checkbox) {
-            checkbox.checked = false;
-        }
-
-        // Actualizar el resumen
+        document.querySelector(`input[data-day="${day}"][data-hour="${hour}"]`).checked = false;
         updateSummary();
     }, 300);
-}
+};
 
-// Función para mostrar/ocultar el mensaje de confirmación
-function toggleConfirmMessage(show) {
-    const confirmMessage = document.getElementById('confirm-message');
-    if (show) {
-        confirmMessage.classList.remove('hidden');
-    } else {
-        confirmMessage.classList.add('hidden');
-    }
-}
+// Inicialización principal
+document.addEventListener('DOMContentLoaded', () => {
+    // Generar bloques de horas
+    DAYS.forEach(day => {
+        const container = document.getElementById(`${day}-hours`);
+        container.innerHTML = generateTimeSlots().map(time => createTimeBlockHTML(day, time)).join('');
+    });
 
-// Eliminar el alert básico al enviar
-document.getElementById('submit').addEventListener('click', function (e) {
-    // El mensaje se maneja en el evento submit del formulario
+    initializeDaySelection();
+    setupHourSelection();
+    handleFormSubmission();
+    updateSummary();
 });
