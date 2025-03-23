@@ -52,12 +52,14 @@ def search_profesor(search_query=""):
     try:
         with database.cursor(dictionary=True) as cursor:
             if search_query:
-                cursor.execute(
-                    f"SELECT * FROM profesores WHERE Nombre LIKE '%{search_query}%' OR Apellidos LIKE '%{search_query}%'")
+                # Usar parámetros para evitar inyección SQL
+                query = "SELECT * FROM profesores WHERE Nombre LIKE %s OR Apellidos LIKE %s"
+                search_param = f"%{search_query}%"
+                cursor.execute(query, (search_param, search_param))
             else:
                 cursor.execute("SELECT * FROM profesores")
             profesores = cursor.fetchall()
         return profesores
     except mysql.connector.Error as err:
-        print(f"❌ Error al obtener datos: {err}")
+        print(f"❌ Error al buscar profesores: {err}")
         return []

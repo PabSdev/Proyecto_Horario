@@ -31,26 +31,29 @@ def dashboard():
                            dias_profesores=dias_profesores)
 
 
-@app.route('/busqueda_profesores', methods=['GET'])
-def busqueda_profesores():
-    query = request.args.get('query', '').strip()
-
-    # Filtrar los profesores basados en el nombre o apellido
-    profesores = db.get_data()
+@app.route('/buscar_profesor', methods=['GET'])
+def buscar_profesor():
+    query = request.args.get('query', '')
+    profesores = db.search_profesor(query)
+    
+    # Procesar los resultados para incluir los días asignados
+    dias_profesores = contar_dias_profesor(profesores)
+    
+    # Formatear los resultados para la tabla
     resultados = []
-
     for profesor in profesores:
-        if query.lower() in profesor['Nombre'].lower() or query.lower() in profesor['Apellidos'].lower():
-            # Aquí se obtiene el total de días asignados, como ya se discutió
-            total_dias = contar_dias_profesor(
-                profesor['Horario'])  # Asegúrate de que esta función existe y calcule correctamente
-            resultados.append({
-                'Nombre': profesor['Nombre'],
-                'Apellidos': profesor['Apellidos'],
-                'horas_asignadas': total_dias
-            })
-
-    return jsonify({'resultados': resultados})
+        nombre_completo = f"{profesor['Nombre']} {profesor['Apellidos']}"
+        horas_asignadas = profesor.get('horas_asignadas', 0)
+        
+        resultados.append({
+            'id': profesor.get('id', ''),
+            'Nombre': profesor.get('Nombre', ''),
+            'Apellidos': profesor.get('Apellidos', ''),
+            'dias_totales': dias_profesores.get(nombre_completo, 0),
+            'horas_asignadas': horas_asignadas
+        })
+    
+    return jsonify(resultados)
 
 
 # Ruta para manejar el formulario
@@ -88,9 +91,12 @@ def contar_dias_profesor(profesores):
 
     for profesor in profesores:
         nombre_completo = f"{profesor['Nombre']} {profesor['Apellidos']}"
-        horario = json.loads(profesor['Horario'])  # Convertir el string JSON a diccionario
-        dias_asignados = len(horario)  # Contar las claves (días) en el JSON
-
+        try:
+            horario = json.loads(profesor['Horario']) if profesor['Horario'] else {}
+            dias_asignados = len(horario)  # Contar las claves (días) en el JSON
+        except (json.JSONDecodeError, TypeError, KeyError):
+            dias_asignados = 0
+            
         resultado[nombre_completo] = dias_asignados
 
     return resultado
