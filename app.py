@@ -22,8 +22,35 @@ def form():
 @app.route('/Dashboard')
 def dashboard():
     profesores = db.get_data()  # Obtiene los datos de la BD
-    return render_template('dashboard.html', profesores=profesores)
+    total_profesores = db.get_profesores()
 
+    # Contar los días asignados para cada profesor
+    dias_profesores = contar_dias_profesor(profesores)
+
+    return render_template('Dashboard.html', profesores=profesores, total_profesores=total_profesores,
+                           dias_profesores=dias_profesores)
+
+
+@app.route('/busqueda_profesores', methods=['GET'])
+def busqueda_profesores():
+    query = request.args.get('query', '').strip()
+
+    # Filtrar los profesores basados en el nombre o apellido
+    profesores = db.get_data()
+    resultados = []
+
+    for profesor in profesores:
+        if query.lower() in profesor['Nombre'].lower() or query.lower() in profesor['Apellidos'].lower():
+            # Aquí se obtiene el total de días asignados, como ya se discutió
+            total_dias = contar_dias_profesor(
+                profesor['Horario'])  # Asegúrate de que esta función existe y calcule correctamente
+            resultados.append({
+                'Nombre': profesor['Nombre'],
+                'Apellidos': profesor['Apellidos'],
+                'horas_asignadas': total_dias
+            })
+
+    return jsonify({'resultados': resultados})
 
 
 # Ruta para manejar el formulario
@@ -50,6 +77,23 @@ def submit_form():
         return jsonify({'message': 'Datos guardados correctamente'}), 200
     except mysql.connector.Error as e:
         return jsonify({'error': f'Error al guardar en la base de datos: {str(e)}'}), 500
+
+
+def contar_dias_profesor(profesores):
+    """
+    Toma una lista de diccionarios con la clave 'Horario' (en formato JSON)
+    y devuelve un diccionario con el nombre del profesor y la cantidad de días asignados.
+    """
+    resultado = {}
+
+    for profesor in profesores:
+        nombre_completo = f"{profesor['Nombre']} {profesor['Apellidos']}"
+        horario = json.loads(profesor['Horario'])  # Convertir el string JSON a diccionario
+        dias_asignados = len(horario)  # Contar las claves (días) en el JSON
+
+        resultado[nombre_completo] = dias_asignados
+
+    return resultado
 
 
 # Ejecución de la aplicación
