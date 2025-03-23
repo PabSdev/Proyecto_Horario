@@ -21,7 +21,9 @@ def form():
 
 @app.route('/Dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    profesores = db.get_data()  # Obtiene los datos de la BD
+    return render_template('dashboard.html', profesores=profesores)
+
 
 
 # Ruta para manejar el formulario

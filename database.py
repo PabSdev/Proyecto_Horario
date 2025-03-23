@@ -23,4 +23,9 @@ def upload_data(nombre, apellidos, Horario):
     except mysql.connector.Error as err:
         print(f"❌ Error de MySQL: {err}")
 
-
+def get_data():
+    cursor = database.cursor(dictionary=True)
+    cursor.execute("SELECT *  FROM profesores")
+    profesores = cursor.fetchall()
+    database.close()
+    return profesores
