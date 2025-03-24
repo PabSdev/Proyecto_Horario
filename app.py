@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import json
 import database as db
 import mysql.connector
+from markupsafe import escape
 
 # Configuración de la aplicación Flask
 app = Flask(__name__)
@@ -19,32 +20,57 @@ def form():
     return render_template('Form.html')
 
 
+def generar_distribucion_profesores(profesores):
+    distribucion = {}
+    for profesor in profesores:
+        for dia, horas in profesor['horario'].items():
+            if dia not in distribucion:
+                distribucion[dia] = {}
+            for hora in horas:
+                if hora not in distribucion[dia]:
+                    distribucion[dia][hora] = []
+                distribucion[dia][hora].append(profesor['Nombre'] + ' ' + profesor['Apellidos'])
+    return distribucion
+
+
 @app.route('/Dashboard')
 def dashboard():
     profesores = db.get_data()  # Obtiene los datos de la BD
-    total_profesores = db.get_profesores()
+    for profesor in profesores:
+        try:
+            horario = json.loads(profesor.get('Horario', '{}'))
+        except json.JSONDecodeError:
+            horario = {}
+        profesor['horario'] = horario
 
-    # Contar los días asignados para cada profesor
+    distribucion = generar_distribucion_profesores(profesores)
+    total_profesores = db.get_profesores()
     dias_profesores = contar_dias_profesor(profesores)
 
-    return render_template('Dashboard.html', profesores=profesores, total_profesores=total_profesores,
-                           dias_profesores=dias_profesores)
-
+    return render_template('Dashboard.html',
+                           profesores=profesores,
+                           total_profesores=total_profesores,
+                           dias_profesores=dias_profesores,
+                           distribucion=distribucion)
 
 @app.route('/buscar_profesor', methods=['GET'])
 def buscar_profesor():
-    query = request.args.get('query', '')
+    query = request.args.get('query', '').strip()
     profesores = db.search_profesor(query)
-    
-    # Procesar los resultados para incluir los días asignados
+
     dias_profesores = contar_dias_profesor(profesores)
-    
-    # Formatear los resultados para la tabla
+
     resultados = []
     for profesor in profesores:
         nombre_completo = f"{profesor['Nombre']} {profesor['Apellidos']}"
-        horas_asignadas = profesor.get('horas_asignadas', 0)
-        
+
+        try:
+            horario = json.loads(profesor.get('Horario', '{}') or '{}')  # Evita errores en JSON
+            horas_asignadas = sum(len(horas) for horas in horario.values())  # Total de horas
+        except (json.JSONDecodeError, TypeError):
+            horario = {}
+            horas_asignadas = 0
+
         resultados.append({
             'id': profesor.get('id', ''),
             'Nombre': profesor.get('Nombre', ''),
@@ -52,24 +78,22 @@ def buscar_profesor():
             'dias_totales': dias_profesores.get(nombre_completo, 0),
             'horas_asignadas': horas_asignadas
         })
-    
+
     return jsonify(resultados)
 
 
 # Ruta para manejar el formulario
 @app.route('/submit-form', methods=['POST'])
 def submit_form():
-    nombre = request.form.get('nombre', '').strip()
-    apellidos = request.form.get('apellidos', '').strip()
+    nombre = escape(request.form.get('nombre', '').strip())
+    apellidos = escape(request.form.get('apellidos', '').strip())
     dias = request.form.getlist('dias[]')
 
-    # Construcción del diccionario de horarios
     horarios = {
         dia: request.form.getlist(f'horas[{dia}][]')
         for dia in dias if request.form.getlist(f'horas[{dia}][]')
     }
 
-    # Validación de datos
     if not nombre or not apellidos or not dias or not horarios:
         return jsonify({'error': 'Todos los campos son obligatorios'}), 400
 
@@ -78,8 +102,10 @@ def submit_form():
     try:
         db.upload_data(nombre, apellidos, horarios_json)
         return jsonify({'message': 'Datos guardados correctamente'}), 200
+    except IntegrityError:
+        return jsonify({'error': 'El profesor ya existe en la base de datos'}), 400
     except mysql.connector.Error as e:
-        return jsonify({'error': f'Error al guardar en la base de datos: {str(e)}'}), 500
+        return jsonify({'error': f'Error en la base de datos: {str(e)}'}), 500
 
 
 def contar_dias_profesor(profesores):
@@ -96,7 +122,7 @@ def contar_dias_profesor(profesores):
             dias_asignados = len(horario)  # Contar las claves (días) en el JSON
         except (json.JSONDecodeError, TypeError, KeyError):
             dias_asignados = 0
-            
+
         resultado[nombre_completo] = dias_asignados
 
     return resultado
