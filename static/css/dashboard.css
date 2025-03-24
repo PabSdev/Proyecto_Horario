@@ -1,6 +1,8 @@
-.disponible {
-  background-color: rgba(16, 185, 129, 0.2);
+.header-gradient {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
 }
-.no-disponible {
-  background-color: rgba(239, 68, 68, 0.2);
+
+.glass-effect {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.7);
 }
