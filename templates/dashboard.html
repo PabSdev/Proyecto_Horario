@@ -86,258 +86,138 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Tabla de Horarios -->
-            <div class="md:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
+
+            <!-- Sección de Profesores -->
+            <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-semibold text-dark">Horario Semanal</h2>
-                        <div class="flex space-x-2">
-                            <button class="text-gray-500 hover:text-primary transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path
-                                        d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
-                                </svg>
-                            </button>
-                            <button class="text-gray-500 hover:text-primary transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
+                        <h2 class="text-xl font-semibold text-dark">Profesores</h2>
+                        <div class="relative">
+                            <input type="text" id="busqueda" placeholder="Buscar profesor..."
+                                class="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary" />
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
+                                viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                    clip-rule="evenodd" />
+                            </svg>
                         </div>
                     </div>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="min-w-full border-collapse">
-                        <thead>
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <th
-                                    class="p-3 border border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Hora
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Nombre
                                 </th>
-                                <th
-                                    class="p-3 border border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Lunes
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Apellidos
                                 </th>
-                                <th
-                                    class="p-3 border border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Martes
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Horas Totales
                                 </th>
-                                <th
-                                    class="p-3 border border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Miércoles
-                                </th>
-                                <th
-                                    class="p-3 border border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Jueves
-                                </th>
-                                <th
-                                    class="p-3 border border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Viernes
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Horas Asignadas
                                 </th>
                             </tr>
                         </thead>
-                        <tbody id="horario-tbody" class="divide-y divide-gray-200">
-                            <!-- Se llenará con JavaScript -->
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for profesor in profesores %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="flex-shrink-0 h-10 w-10 bg-primary/20 rounded-full flex items-center justify-center">
+                                            <span class="text-primary font-medium">
+                                                {{ profesor.Nombre[0] if profesor.Nombre else '' }}
+                                            </span>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ profesor.Nombre }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ profesor.Apellidos }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900"> {{ dias_profesores[profesor.Nombre + ' ' +
+                                        profesor.Apellidos] }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ profesor.horas_asignadas }}</div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-primary h-2 rounded-full"
+                                            style="width: {{ (profesor.horas_asignadas / 24) * 100 if profesor.horas_asignadas else 0 }}%">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Acciones y Estadísticas -->
-            <div class="md:col-span-1 space-y-6">
-                <!-- Card de Acciones -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="p-6 border-b border-gray-200">
-                        <h2 class="text-xl font-semibold text-dark">Acciones</h2>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex flex-col space-y-3">
-                            <button id="btn-exportar"
-                                class="flex items-center justify-center bg-secondary hover:bg-secondary/90 text-white font-medium py-3 px-4 rounded-md transition duration-200">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                </svg>
-                                Exportar Horario
-                            </button>
-                            <button id="btn-optimizar"
-                                class="flex items-center justify-center bg-accent hover:bg-[#e08700] text-white font-medium py-3 px-4 rounded-md transition duration-200">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                    <path d="M9 16l2 2 4-4"></path>
-                                </svg>
-                                Generar Horario Optimizado
-                            </button>
-                        </div>
-                    </div>
+            <!-- Modify the Distribución de Profesores section -->
+            <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-dark">Distribución de Profesores</h2>
                 </div>
-
-                <!-- Card de Estadísticas -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="p-6 border-b border-gray-200">
-                        <h2 class="text-xl font-semibold text-dark">Estadísticas</h2>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <div>
-                            <p class="text-sm text-gray-600 mb-1">Disponibilidad total</p>
-                            <div class="w-full bg-gray-200 rounded-full h-4">
-                                <div id="disponibilidad-barra" class="bg-green-500 h-4 rounded-full" style="width: 65%">
-                                </div>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">
-                                <span id="disponibilidad-porcentaje">65</span>% disponible
-                            </p>
-                        </div>
-
-                        <div>
-                            <p class="text-sm text-gray-600 mb-2">Distribución por día</p>
-                            <canvas id="chart-distribucion" height="150"></canvas>
-                        </div>
-                    </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Día</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Hora</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Profesores</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% if distribucion is defined %}
+                            {% for dia, horas in distribucion.items() %}
+                            {% for hora, profesores in horas.items() %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ dia }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ hora }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <ul>
+                                        {% for profesor in profesores %}
+                                        <li>{{ profesor }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-center text-gray-500">
+                                    No hay datos de distribución disponibles
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
 
-        <!-- Sección de Profesores -->
-        <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold text-dark">Profesores</h2>
-                    <div class="relative">
-                        <input type="text" id="busqueda" placeholder="Buscar profesor..."
-                            class="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary" />
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
-                            viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Nombre
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Apellidos
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Horas Totales
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Horas Asignadas
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        {% for profesor in profesores %}
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div
-                                        class="flex-shrink-0 h-10 w-10 bg-primary/20 rounded-full flex items-center justify-center">
-                                        <span class="text-primary font-medium">
-                                            {{ profesor.Nombre[0] if profesor.Nombre else '' }}
-                                        </span>
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">
-                                            {{ profesor.Nombre }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ profesor.Apellidos }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900"> {{ dias_profesores[profesor.Nombre + ' ' +
-                                    profesor.Apellidos] }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ profesor.horas_asignadas }}</div>
-                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
-                                    <div class="bg-primary h-2 rounded-full"
-                                        style="width: {{ (profesor.horas_asignadas / 24) * 100 if profesor.horas_asignadas else 0 }}%">
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Modify the Distribución de Profesores section -->
-        <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-dark">Distribución de Profesores</h2>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Día</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Hora</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Profesores</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        {% if distribucion is defined %}
-                        {% for dia, horas in distribucion.items() %}
-                        {% for hora, profesores in horas.items() %}
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ dia }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ hora }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <ul>
-                                    {% for profesor in profesores %}
-                                    <li>{{ profesor }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td colspan="3" class="px-6 py-4 text-center text-gray-500">
-                                No hay datos de distribución disponibles
-                            </td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/tailwind.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/tailwind.js') }}"></script>
 </body>
 
 </html>
