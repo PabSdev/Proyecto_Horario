@@ -47,7 +47,7 @@ def dashboard():
     total_profesores = db.get_profesores()
     dias_profesores = contar_dias_profesor(profesores)
 
-    return render_template('Dashboard.html',
+    return render_template('dashboard.html',
                            profesores=profesores,
                            total_profesores=total_profesores,
                            dias_profesores=dias_profesores,
