@@ -11,12 +11,12 @@ database = mysql.connector.connect(
 
 
 # Función para insertar datos en la BD
-def upload_data(nombre, apellidos, horario):
+def upload_data(nombre, apellidos, ciclo, horario):
     try:
         with database.cursor() as cursor:
             cursor.execute(
-                'INSERT INTO profesores (Nombre, Apellidos, Horario) VALUES (%s, %s, %s)',
-                (nombre, apellidos, horario)
+                'INSERT INTO Profesores (Nombre, Apellidos, Ciclo, Horarios) VALUES (%s, %s, %s, %s)',
+                (nombre, apellidos, ciclo, horario)
             )
             database.commit()
         print("✅ Datos insertados correctamente en la base de datos.")
@@ -28,7 +28,7 @@ def upload_data(nombre, apellidos, horario):
 def get_data():
     try:
         with database.cursor(dictionary=True) as cursor:
-            cursor.execute("SELECT * FROM profesores")
+            cursor.execute("SELECT * FROM Profesores")
             profesores = cursor.fetchall()
         return profesores
     except mysql.connector.Error as err:
@@ -40,7 +40,7 @@ def get_data():
 def get_profesores():
     try:
         with database.cursor() as cursor:
-            cursor.execute("SELECT COUNT(id) FROM profesores")
+            cursor.execute("SELECT COUNT(id) FROM Profesores")
             profesores = cursor.fetchone()[0]  # Obtiene solo el número
         return profesores
     except mysql.connector.Error as err:
@@ -53,11 +53,11 @@ def search_profesor(search_query=""):
         with database.cursor(dictionary=True) as cursor:
             if search_query:
                 # Usar parámetros para evitar inyección SQL
-                query = "SELECT * FROM profesores WHERE Nombre LIKE %s OR Apellidos LIKE %s"
+                query = "SELECT * FROM Profesores WHERE Nombre LIKE %s OR Apellidos LIKE %s"
                 search_param = f"%{search_query}%"
                 cursor.execute(query, (search_param, search_param))
             else:
-                cursor.execute("SELECT * FROM profesores")
+                cursor.execute("SELECT * FROM Profesores")
             profesores = cursor.fetchall()
         return profesores
     except mysql.connector.Error as err:
