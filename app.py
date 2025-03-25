@@ -22,16 +22,34 @@ def form():
     return render_template('Form.html')
 
 
-def generar_distribucion_profesores(profesores):
+def generar_distribucion_profesores(profesores, ciclo_prioritario=None):
     distribucion = {}
+
+    # Procesar cada profesor
     for profesor in profesores:
-        for dia, horas in profesor['horario'].items():
+        nombre_completo = f"{profesor['nombre']} {profesor['apellidos']}"
+        ciclo = profesor.get('ciclo', 'sin_ciclo')  # Si no hay ciclo, asumimos 'sin_ciclo'
+
+        # Decodificar el horario JSON
+        try:
+            horario = json.loads(profesor['horario_json'])
+        except json.JSONDecodeError:
+            horario = {}  # Si el JSON es inválido, asumimos un horario vacío
+
+        # Procesar el horario
+        for dia, horas in horario.items():
             if dia not in distribucion:
                 distribucion[dia] = {}
             for hora in horas:
                 if hora not in distribucion[dia]:
-                    distribucion[dia][hora] = []
-                distribucion[dia][hora].append(profesor['Nombre'] + ' ' + profesor['Apellidos'])
+                    distribucion[dia][hora] = {}
+
+                # Organizar por ciclo formativo
+                if ciclo not in distribucion[dia][hora]:
+                    distribucion[dia][hora][ciclo] = []
+
+                distribucion[dia][hora][ciclo].append(nombre_completo)
+
     return distribucion
 
 
