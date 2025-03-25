@@ -88,6 +88,7 @@ def submit_form():
     nombre = escape(request.form.get('nombre', '').strip())
     apellidos = escape(request.form.get('apellidos', '').strip())
     dias = request.form.getlist('dias[]')
+    ciclo = request.form.get('ciclos')
 
     horarios = {
         dia: request.form.getlist(f'horas[{dia}][]')
@@ -100,7 +101,7 @@ def submit_form():
     horarios_json = json.dumps(horarios)
 
     try:
-        db.upload_data(nombre, apellidos, horarios_json)
+        db.upload_data(nombre, apellidos, ciclo, horarios_json)
         return jsonify({'message': 'Datos guardados correctamente'}), 200
     except IntegrityError:
         return jsonify({'error': 'El profesor ya existe en la base de datos'}), 400
