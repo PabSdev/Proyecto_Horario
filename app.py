@@ -1,6 +1,5 @@
-from sqlite3 import IntegrityError
-
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from functools import wraps
 import json
 import database as db
 import mysql.connector
@@ -8,146 +7,119 @@ from markupsafe import escape
 
 # Configuración de la aplicación Flask
 app = Flask(__name__)
-app.debug = True  # Se usa app.debug en lugar de app.config['Debug']
+app.debug = True 
+app.secret_key = 'tu_clave_secreta_aqui'  # Cambiar por una clave segura en producción
 
+# Decorador para proteger rutas (requiere que el usuario esté autenticado)
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'usuario' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
-# Rutas principales
+# Página de inicio
 @app.route('/')
 def landing_page():
     return render_template('index.html')
 
+# Página de inicio de sesión
+@app.route('/login')
+def login():
+    if 'usuario' in session:
+        return redirect(url_for('dashboard'))  # Redirige si ya está autenticado
+    return render_template('login.html')
 
-@app.route('/Form')
-def form():
-    return render_template('Form.html')
+# Cierre de sesión
+@app.route('/logout')
+def logout():
+    session.pop('usuario', None)
+    return redirect(url_for('login'))
 
+# Verificación de credenciales del profesor
+@app.route('/verificar-profesor', methods=['POST'])
+def verificar_profesor():
+    username = request.form.get('username', '').strip()
+    password = request.form.get('password', '').strip()
+    
+    if not username or not password:
+        return jsonify({'error': 'Usuario y contraseña son requeridos'}), 400
+    
+    usuario = db.get_admin(username, password)
+    if usuario:
+        session['usuario'] = username  # Guarda la sesión del usuario autenticado
+        return jsonify({'status': 'success', 'redirect': url_for('dashboard')})
+    
+    return jsonify({'error': 'Usuario o contraseña incorrectos'}), 401
 
-def generar_distribucion_profesores(profesores, ciclo_prioritario=None):
-    distribucion = {}
-
-    # Procesar cada profesor
-    for profesor in profesores:
-        nombre_completo = f"{profesor['nombre']} {profesor['apellidos']}"
-        ciclo = profesor.get('ciclo', 'sin_ciclo')  # Si no hay ciclo, asumimos 'sin_ciclo'
-
-        # Decodificar el horario JSON
-        try:
-            horario = json.loads(profesor['horario_json'])
-        except json.JSONDecodeError:
-            horario = {}  # Si el JSON es inválido, asumimos un horario vacío
-
-        # Procesar el horario
-        for dia, horas in horario.items():
-            if dia not in distribucion:
-                distribucion[dia] = {}
-            for hora in horas:
-                if hora not in distribucion[dia]:
-                    distribucion[dia][hora] = {}
-
-                # Organizar por ciclo formativo
-                if ciclo not in distribucion[dia][hora]:
-                    distribucion[dia][hora][ciclo] = []
-
-                distribucion[dia][hora][ciclo].append(nombre_completo)
-
-    return distribucion
-
-
-@app.route('/Dashboard')
+# Página principal del dashboard
+@app.route('/dashboard')
+@login_required
 def dashboard():
-    profesores = db.get_data()  # Obtiene los datos de la BD
-    for profesor in profesores:
-        try:
-            horario = json.loads(profesor.get('Horario', '{}'))
-        except json.JSONDecodeError:
-            horario = {}
-        profesor['horario'] = horario
-
-    distribucion = generar_distribucion_profesores(profesores)
-    total_profesores = db.get_profesores()
-    dias_profesores = contar_dias_profesor(profesores)
+    profesores = db.get_data()  # Obtiene la lista de profesores desde la BD
+    total_profesores = len(profesores)  # Cuenta total de profesores
+    dias_profesores = contar_dias_profesor(profesores)  # Calcula los días asignados a cada profesor
 
     return render_template('dashboard.html',
                            profesores=profesores,
                            total_profesores=total_profesores,
-                           dias_profesores=dias_profesores,
-                           distribucion=distribucion)
+                           dias_profesores=dias_profesores)
 
+# Búsqueda de profesores
 @app.route('/buscar_profesor', methods=['GET'])
+@login_required
 def buscar_profesor():
     query = request.args.get('query', '').strip()
-    profesores = db.search_profesor(query)
-
+    profesores = db.search_profesor(query)  # Filtra los profesores según la búsqueda
     dias_profesores = contar_dias_profesor(profesores)
 
-    resultados = []
-    for profesor in profesores:
-        nombre_completo = f"{profesor['Nombre']} {profesor['Apellidos']}"
-
-        try:
-            horario = json.loads(profesor.get('Horario', '{}') or '{}')  # Evita errores en JSON
-            horas_asignadas = sum(len(horas) for horas in horario.values())  # Total de horas
-        except (json.JSONDecodeError, TypeError):
-            horario = {}
-            horas_asignadas = 0
-
-        resultados.append({
-            'id': profesor.get('id', ''),
-            'Nombre': profesor.get('Nombre', ''),
-            'Apellidos': profesor.get('Apellidos', ''),
-            'dias_totales': dias_profesores.get(nombre_completo, 0),
-            'horas_asignadas': horas_asignadas
-        })
-
+    # Formateo de los resultados de búsqueda
+    resultados = [
+        {
+            'id': prof.get('id', ''),
+            'Nombre': prof.get('Nombre', ''),
+            'Apellidos': prof.get('Apellidos', ''),
+            'dias_totales': dias_profesores.get(f"{prof['Nombre']} {prof['Apellidos']}", 0),
+            'horas_asignadas': sum(len(json.loads(prof.get('Horario', '{}') or '{}').values())
+                                   if prof.get('Horario') else 0)
+        }
+        for prof in profesores
+    ]
+    
     return jsonify(resultados)
 
-
-# Ruta para manejar el formulario
+# Procesamiento del formulario de asignación de horarios
 @app.route('/submit-form', methods=['POST'])
+@login_required
 def submit_form():
     nombre = escape(request.form.get('nombre', '').strip())
     apellidos = escape(request.form.get('apellidos', '').strip())
     dias = request.form.getlist('dias[]')
     ciclo = request.form.get('ciclos')
-
-    horarios = {
-        dia: request.form.getlist(f'horas[{dia}][]')
-        for dia in dias if request.form.getlist(f'horas[{dia}][]')
-    }
-
-    if not nombre or not apellidos or not dias or not horarios:
+    
+    if not nombre or not apellidos or not dias:
         return jsonify({'error': 'Todos los campos son obligatorios'}), 400
-
+    
+    # Obtención y almacenamiento del horario en formato JSON
+    horarios = {dia: request.form.getlist(f'horas[{dia}][]') for dia in dias if request.form.getlist(f'horas[{dia}][]')}
     horarios_json = json.dumps(horarios)
-
+    
     try:
-        db.upload_data(nombre, apellidos, ciclo, horarios_json)
+        db.upload_data(nombre, apellidos, ciclo, horarios_json)  # Sube los datos a la BD
         return jsonify({'message': 'Datos guardados correctamente'}), 200
     except IntegrityError:
         return jsonify({'error': 'El profesor ya existe en la base de datos'}), 400
     except mysql.connector.Error as e:
         return jsonify({'error': f'Error en la base de datos: {str(e)}'}), 500
 
-
+# Función para contar los días asignados a cada profesor
 def contar_dias_profesor(profesores):
-    """
-    Toma una lista de diccionarios con la clave 'Horario' (en formato JSON)
-    y devuelve un diccionario con el nombre del profesor y la cantidad de días asignados.
-    """
-    resultado = {}
-
-    for profesor in profesores:
-        nombre_completo = f"{profesor['Nombre']} {profesor['Apellidos']}"
-        try:
-            horario = json.loads(profesor['Horario']) if profesor['Horario'] else {}
-            dias_asignados = len(horario)  # Contar las claves (días) en el JSON
-        except (json.JSONDecodeError, TypeError, KeyError):
-            dias_asignados = 0
-
-        resultado[nombre_completo] = dias_asignados
-
-    return resultado
-
+    """Devuelve un diccionario con el número de días asignados a cada profesor."""
+    return {
+        f"{prof['Nombre']} {prof['Apellidos']}": len(json.loads(prof.get('Horario', '{}') or '{}'))
+        for prof in profesores
+    }
 
 # Ejecución de la aplicación
 if __name__ == '__main__':
