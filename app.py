@@ -8,7 +8,7 @@ from markupsafe import escape
 
 # Configuración de la aplicación Flask
 app = Flask(__name__)
-app.debug = True  # Se usa app.debug en lugar de app.config['Debug']
+app.debug = True  
 
 
 # Rutas principales

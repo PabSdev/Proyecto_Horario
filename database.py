@@ -23,19 +23,6 @@ def upload_data(nombre, apellidos, ciclo, horario):
     except mysql.connector.Error as err:
         print(f"❌ Error de MySQL: {err}")
 
-def get_admin():
-    try:
-        with database.cursor() as cursor:
-            cursor.execute(
-                "SELECT usuario, contrasena FROM usuario"
-            )
-            usuario = cursor.fetchall()
-            return usuario
-    except mysql.connector.Error as err:
-        print(f"❌ Error de MySQL: {err}")
-
-
-
 
 # Función para obtener los datos de los profesores
 def get_data():
@@ -54,10 +41,12 @@ def get_profesores():
     try:
         with database.cursor() as cursor:
             cursor.execute("SELECT COUNT(id) FROM Profesores")
-            profesores = cursor.fetchone()[0]  
+            profesores = cursor.fetchone()[0]  # Obtiene solo el número
+        return profesores
     except mysql.connector.Error as err:
         print(f"❌ Error al contar profesores: {err}")
-        return 0  
+        return 0  # Devuelve 0 si hay un error
+
 
 def search_profesor(search_query=""):
     try:
