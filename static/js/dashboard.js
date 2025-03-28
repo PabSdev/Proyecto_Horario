@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">${
-                                    profesor.dias_totales
+                                    profesor.Ciclo
                                 }</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
-    // También podemos agregar un pequeño retraso para búsqueda automática mientras se escribe
+    // pequeño retraso para búsqueda automática mientras se escribe
     let timeoutId
     busquedaInput.addEventListener('input', function () {
         clearTimeout(timeoutId)

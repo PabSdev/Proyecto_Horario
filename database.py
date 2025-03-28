@@ -2,11 +2,11 @@ import mysql.connector
 
 # Conexión a la base de datos
 database = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='1234567890',
+    host='horarios.cctsgukqoa4l.us-east-1.rds.amazonaws.com',
+    user='admin',
+    password='321Tiempo',
     database='Horarios',
-    port=3307
+    port=3306
 )
 
 

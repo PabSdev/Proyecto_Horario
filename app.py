@@ -22,35 +22,7 @@ def form():
     return render_template('Form.html')
 
 
-def generar_distribucion_profesores(profesores, ciclo_prioritario=None):
-    distribucion = {}
 
-    # Procesar cada profesor
-    for profesor in profesores:
-        nombre_completo = f"{profesor['nombre']} {profesor['apellidos']}"
-        ciclo = profesor.get('ciclo', 'sin_ciclo')  # Si no hay ciclo, asumimos 'sin_ciclo'
-
-        # Decodificar el horario JSON
-        try:
-            horario = json.loads(profesor['horario_json'])
-        except json.JSONDecodeError:
-            horario = {}  # Si el JSON es inválido, asumimos un horario vacío
-
-        # Procesar el horario
-        for dia, horas in horario.items():
-            if dia not in distribucion:
-                distribucion[dia] = {}
-            for hora in horas:
-                if hora not in distribucion[dia]:
-                    distribucion[dia][hora] = {}
-
-                # Organizar por ciclo formativo
-                if ciclo not in distribucion[dia][hora]:
-                    distribucion[dia][hora][ciclo] = []
-
-                distribucion[dia][hora][ciclo].append(nombre_completo)
-
-    return distribucion
 
 
 @app.route('/Dashboard')
@@ -63,15 +35,14 @@ def dashboard():
             horario = {}
         profesor['horario'] = horario
 
-    distribucion = generar_distribucion_profesores(profesores)
+
     total_profesores = db.get_profesores()
     dias_profesores = contar_dias_profesor(profesores)
 
     return render_template('dashboard.html',
                            profesores=profesores,
                            total_profesores=total_profesores,
-                           dias_profesores=dias_profesores,
-                           distribucion=distribucion)
+                           dias_profesores=dias_profesores)
 
 @app.route('/buscar_profesor', methods=['GET'])
 def buscar_profesor():
