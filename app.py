@@ -59,13 +59,14 @@ def buscar_profesor():
             horario = json.loads(profesor.get('Horario', '{}') or '{}')  # Evita errores en JSON
             horas_asignadas = sum(len(horas) for horas in horario.values())  # Total de horas
         except (json.JSONDecodeError, TypeError):
-            horario = {}
             horas_asignadas = 0
 
+        #Extraemos los datos de la bdd y los declaramos aqui
         resultados.append({
             'id': profesor.get('id', ''),
             'Nombre': profesor.get('Nombre', ''),
             'Apellidos': profesor.get('Apellidos', ''),
+            'Ciclo': profesor.get('Ciclo', ''),
             'dias_totales': dias_profesores.get(nombre_completo, 0),
             'horas_asignadas': horas_asignadas
         })
