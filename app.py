@@ -8,7 +8,7 @@ from markupsafe import escape
 
 # Configuración de la aplicación Flask
 app = Flask(__name__)
-app.debug = True  
+app.debug = True
 
 
 # Rutas principales
@@ -22,27 +22,25 @@ def form():
     return render_template('Form.html')
 
 
-
-
-
 @app.route('/Dashboard')
 def dashboard():
     profesores = db.get_data()  # Obtiene los datos de la BD
     for profesor in profesores:
         try:
-            horario = json.loads(profesor.get('Horario', '{}'))
+            horario = json.loads(profesor.get('Horarios', '{}'))
         except json.JSONDecodeError:
             horario = {}
         profesor['horario'] = horario
 
-
     total_profesores = db.get_profesores()
     dias_profesores = contar_dias_profesor(profesores)
+    distribucion = agrupar_horarios_por_ciclo(profesores)
 
     return render_template('dashboard.html',
                            profesores=profesores,
                            total_profesores=total_profesores,
-                           dias_profesores=dias_profesores)
+                           dias_profesores=dias_profesores,
+                           distribucion=distribucion)
 
 @app.route('/buscar_profesor', methods=['GET'])
 def buscar_profesor():
@@ -61,7 +59,7 @@ def buscar_profesor():
         except (json.JSONDecodeError, TypeError):
             horas_asignadas = 0
 
-        #Extraemos los datos de la bdd y los declaramos aqui
+        # Extraemos los datos de la bdd y los declaramos aqui
         resultados.append({
             'id': profesor.get('id', ''),
             'Nombre': profesor.get('Nombre', ''),
@@ -99,6 +97,53 @@ def submit_form():
         return jsonify({'error': 'El profesor ya existe en la base de datos'}), 400
     except mysql.connector.Error as e:
         return jsonify({'error': f'Error en la base de datos: {str(e)}'}), 500
+
+
+def agrupar_horarios_por_ciclo(profesores):
+    agrupados = {}
+    sin_ciclo = []
+
+    # Separar profesores por ciclo o marcarlos como 'Sin ciclo'
+    for profesor in profesores:
+        ciclo = profesor.get('Ciclo', 'Sin ciclo')
+        if ciclo.lower() == 'sin ciclo':
+            sin_ciclo.append(profesor)
+        else:
+            if ciclo not in agrupados:
+                agrupados[ciclo] = []
+            agrupados[ciclo].append(profesor)
+
+    # Construir la estructura final de horarios
+    horarios_finales = {}
+    for ciclo, miembros in agrupados.items():
+        for profesor in miembros:
+            horarios = profesor['horario']  # diccionario de día -> lista de horarios
+            for dia, horarios_dia in horarios.items():
+                if dia not in horarios_finales:
+                    horarios_finales[dia] = {}
+                if ciclo not in horarios_finales[dia]:
+                    horarios_finales[dia][ciclo] = []
+                horarios_finales[dia][ciclo].append({
+                    'nombre': profesor['Nombre'],
+                    'apellidos': profesor['Apellidos'],
+                    'horarios': horarios_dia
+                })
+
+    # Colocar profesores con 'Sin ciclo'
+    for profesor in sin_ciclo:
+        for dia, horarios_dia in profesor['horario'].items():
+            if dia not in horarios_finales:
+                horarios_finales[dia] = {}
+            # Añadirlos bajo una clave especial 'Sin ciclo'
+            if 'Sin ciclo' not in horarios_finales[dia]:
+                horarios_finales[dia]['Sin ciclo'] = []
+            horarios_finales[dia]['Sin ciclo'].append({
+                'nombre': profesor['Nombre'],
+                'apellidos': profesor['Apellidos'],
+                'horarios': horarios_dia
+            })
+
+    return horarios_finales
 
 
 def contar_dias_profesor(profesores):
