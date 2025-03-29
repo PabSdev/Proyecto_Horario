@@ -103,22 +103,46 @@ def submit_form():
 def agrupar_horarios_por_ciclo(profesores):
     horarios_finales = {}
 
+    # Primera pasada: Recopilar todos los profesores por hora y ciclo
     for profesor in profesores:
-        ciclo = profesor.get('Ciclo', 'Sin ciclo')  # Si no tiene ciclo, se considera 'Sin ciclo'
+        ciclo = profesor.get('Ciclo', 'Sin ciclo')
 
         for dia, horarios_dia in profesor['horario'].items():
             if dia not in horarios_finales:
                 horarios_finales[dia] = {}
 
-            for hora in horarios_dia:  # Iteramos por cada hora disponible del profesor
+            for hora in horarios_dia:
                 if hora not in horarios_finales[dia]:
                     horarios_finales[dia][hora] = []
 
                 horarios_finales[dia][hora].append({
                     'nombre': profesor['Nombre'],
                     'apellidos': profesor['Apellidos'],
-                    'ciclo': ciclo  # Se incluye el ciclo para referencia
+                    'ciclo': ciclo
                 })
+
+    # Segunda pasada: Seleccionar el ciclo dominante para cada hora
+    for dia, horas in horarios_finales.items():
+        for hora, profesores_hora in horas.items():
+            # Contar profesores por ciclo
+            contador_ciclos = {}
+            for prof in profesores_hora:
+                ciclo = prof['ciclo']
+                contador_ciclos[ciclo] = contador_ciclos.get(ciclo, 0) + 1
+
+            # Ordenar ciclos por cantidad (mayor primero) y priorizar 'Sin ciclo' en empates
+            ciclos_ordenados = sorted(
+                contador_ciclos.items(),
+                key=lambda x: (-x[1], x[0] != 'Sin ciclo')  # -x[1] para orden descendente
+            )
+
+            if ciclos_ordenados:
+                ciclo_seleccionado, _ = ciclos_ordenados[0]
+                # Filtrar solo los profesores del ciclo seleccionado
+                horarios_finales[dia][hora] = [
+                    prof for prof in profesores_hora
+                    if prof['ciclo'] == ciclo_seleccionado
+                ]
 
     return horarios_finales
 
