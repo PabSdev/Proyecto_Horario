@@ -42,6 +42,7 @@ def dashboard():
                            dias_profesores=dias_profesores,
                            distribucion=distribucion)
 
+
 @app.route('/buscar_profesor', methods=['GET'])
 def buscar_profesor():
     query = request.args.get('query', '').strip()
@@ -100,48 +101,24 @@ def submit_form():
 
 
 def agrupar_horarios_por_ciclo(profesores):
-    agrupados = {}
-    sin_ciclo = []
-
-    # Separar profesores por ciclo o marcarlos como 'Sin ciclo'
-    for profesor in profesores:
-        ciclo = profesor.get('Ciclo', 'Sin ciclo')
-        if ciclo.lower() == 'sin ciclo':
-            sin_ciclo.append(profesor)
-        else:
-            if ciclo not in agrupados:
-                agrupados[ciclo] = []
-            agrupados[ciclo].append(profesor)
-
-    # Construir la estructura final de horarios
     horarios_finales = {}
-    for ciclo, miembros in agrupados.items():
-        for profesor in miembros:
-            horarios = profesor['horario']  # diccionario de día -> lista de horarios
-            for dia, horarios_dia in horarios.items():
-                if dia not in horarios_finales:
-                    horarios_finales[dia] = {}
-                if ciclo not in horarios_finales[dia]:
-                    horarios_finales[dia][ciclo] = []
-                horarios_finales[dia][ciclo].append({
-                    'nombre': profesor['Nombre'],
-                    'apellidos': profesor['Apellidos'],
-                    'horarios': horarios_dia
-                })
 
-    # Colocar profesores con 'Sin ciclo'
-    for profesor in sin_ciclo:
+    for profesor in profesores:
+        ciclo = profesor.get('Ciclo', 'Sin ciclo')  # Si no tiene ciclo, se considera 'Sin ciclo'
+
         for dia, horarios_dia in profesor['horario'].items():
             if dia not in horarios_finales:
                 horarios_finales[dia] = {}
-            # Añadirlos bajo una clave especial 'Sin ciclo'
-            if 'Sin ciclo' not in horarios_finales[dia]:
-                horarios_finales[dia]['Sin ciclo'] = []
-            horarios_finales[dia]['Sin ciclo'].append({
-                'nombre': profesor['Nombre'],
-                'apellidos': profesor['Apellidos'],
-                'horarios': horarios_dia
-            })
+
+            for hora in horarios_dia:  # Iteramos por cada hora disponible del profesor
+                if hora not in horarios_finales[dia]:
+                    horarios_finales[dia][hora] = []
+
+                horarios_finales[dia][hora].append({
+                    'nombre': profesor['Nombre'],
+                    'apellidos': profesor['Apellidos'],
+                    'ciclo': ciclo  # Se incluye el ciclo para referencia
+                })
 
     return horarios_finales
 
