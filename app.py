@@ -94,17 +94,15 @@ def submit_form():
 
     # Valida que todos los campos requeridos estén presentes
     if not nombre or not apellidos or not dias or not horarios:
-        return jsonify({'error': 'Todos los campos son obligatorios'}), 400
+        return render_template('Form.html', error='Todos los campos son obligatorios')
 
     horarios_json = json.dumps(horarios)  # Convierte los horarios en JSON
 
-    try:
-        db.upload_data(nombre, apellidos, ciclo, horarios_json)  # Guarda los datos en la BD
-        return jsonify({'message': 'Datos guardados correctamente'}), 200
-    except IntegrityError:
-        return jsonify({'error': 'El profesor ya existe en la base de datos'}), 400
-    except mysql.connector.Error as e:
-        return jsonify({'error': f'Error en la base de datos: {str(e)}'}), 500
+    # Attempt to upload data and handle response
+    response = db.upload_data(nombre, apellidos, ciclo, horarios_json)
+    if 'error' in response:
+        return render_template('Form.html', error=response['error'])
+    return render_template('Form.html', message=response['message'])
 
 
 # Función para agrupar los horarios de los profesores por ciclo

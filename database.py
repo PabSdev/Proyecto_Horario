@@ -18,16 +18,21 @@ def upload_data(nombre, apellidos, ciclo, horario):
     Inserta un nuevo profesor en la base de datos con su nombre, apellidos,
     ciclo y horarios.
     """
-    try:
-        with database.cursor() as cursor:
-            cursor.execute(
-                'INSERT INTO Profesores (Nombre, Apellidos, Ciclo, Horarios) VALUES (%s, %s, %s, %s)',
-                (nombre, apellidos, ciclo, horario)
-            )
-            database.commit()
-        print("✅ Datos insertados correctamente en la base de datos.")
-    except mysql.connector.Error as err:
-        print(f"❌ Error de MySQL: {err}")
+    if verificar_profesor(nombre, apellidos) == True:
+        print("❌ El profesor ya está registrado.")
+        return
+    else:
+        try:
+            with database.cursor() as cursor:
+                cursor.execute(
+                    "INSERT INTO Profesores (Nombre, Apellidos, Ciclo, Horarios) VALUES (%s, %s, %s, %s)",
+                    (nombre, apellidos, ciclo, horario),
+                )
+                database.commit()
+            print("✅ Datos insertados correctamente en la base de datos.")
+        except mysql.connector.Error as err:
+            print(f"❌ Error de MySQL: {err}")
+
 
 # Función para obtener los datos de los profesores
 def get_data():
@@ -78,3 +83,20 @@ def search_profesor(search_query=""):
     except mysql.connector.Error as err:
         print(f"❌ Error al buscar profesores: {err}")
         return []
+
+def verificar_profesor(nombre, apellidos):
+    """
+    Verifica si un profesor con el nombre y apellidos proporcionados existe en la base de datos.
+    Devuelve True si el profesor existe, False en caso contrario.
+    """
+    try:
+        with database.cursor() as cursor:
+            cursor.execute(
+                "SELECT Nombre, Apellidos FROM Profesores WHERE Nombre = %s AND Apellidos = %s",        
+                (nombre, apellidos)  # Usamos parámetros de consulta
+            )
+            resultado = cursor.fetchone()
+            return resultado is not None
+    except mysql.connector.Error as err:
+        print(f"❌ Error al verificar profesor: {err}")
+        return False
