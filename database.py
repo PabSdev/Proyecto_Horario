@@ -18,20 +18,19 @@ def upload_data(nombre, apellidos, ciclo, horario):
     Inserta un nuevo profesor en la base de datos con su nombre, apellidos,
     ciclo y horarios.
     """
-    if verificar_profesor(nombre, apellidos) == True:
-        print("❌ El profesor ya está registrado.")
-        return
-    else:
-        try:
-            with database.cursor() as cursor:
-                cursor.execute(
-                    "INSERT INTO Profesores (Nombre, Apellidos, Ciclo, Horarios) VALUES (%s, %s, %s, %s)",
-                    (nombre, apellidos, ciclo, horario),
-                )
-                database.commit()
-            print("✅ Datos insertados correctamente en la base de datos.")
-        except mysql.connector.Error as err:
-            print(f"❌ Error de MySQL: {err}")
+    if verificar_profesor(nombre, apellidos):
+        return {'error': 'El profesor ya está registrado.'}
+
+    try:
+        with database.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO Profesores (Nombre, Apellidos, Ciclo, Horarios) VALUES (%s, %s, %s, %s)",
+                (nombre, apellidos, ciclo, horario),
+            )
+            database.commit()
+        return {'message': 'Datos insertados correctamente.'}
+    except mysql.connector.Error as err:
+        return {'error': f'Error de MySQL: {err}'}
 
 
 # Función para obtener los datos de los profesores
