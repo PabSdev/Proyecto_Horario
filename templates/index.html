@@ -1,195 +1,186 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-    <title>Campus Cámara FP - Gestión de Horarios</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
-</head>
-
-<body class="bg-light text-dark leading-relaxed">
-<!-- Header -->
-<header class="bg-primary text-white py-4 shadow-md">
-    <div class="container mx-auto w-[90%] max-w-7xl px-4 flex justify-between items-center">
-        <a href="#" class="text-xl font-bold no-underline text-white">Campus Cámara FP</a>
-        <nav>
-            <div class="hidden md:flex gap-6">
-                <a href="#" class="text-white no-underline hover:text-accent transition-colors">Inicio</a>
-                <a href="#" class="text-white no-underline hover:text-accent transition-colors">Características</a>
-                <a href="#" class="text-white no-underline hover:text-accent transition-colors">Acceso</a>
-                <a href="#" class="text-white no-underline hover:text-accent transition-colors">Contacto</a>
-            </div>
-        </nav>
-    </div>
-</header>
-
-<!-- Hero Section -->
-<section class="bg-gradient-to-r from-primary to-secondary text-white py-16 text-center">
-    <div class="container mx-auto w-[90%] max-w-7xl px-4">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">
-            Gestión Eficiente de Horarios para el Claustro
-        </h1>
-        <p class="text-xl max-w-3xl mx-auto mb-8">
-            Una solución integral que simplifica la organización y planificación
-            de horarios para profesores en Campus Cámara FP. Optimiza tu tiempo y
-            mejora la coordinación académica.
-        </p>
-        <a href="/Form"
-           class="inline-block bg-accent text-white px-6 py-3 rounded font-semibold hover:bg-[#e08700] transition-all hover:-translate-y-1 hover:shadow-lg">Acceder
+   <head>
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+      <title>Campus Cámara FP - Gestión de Horarios</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+   </head>
+   <body class="bg-light text-dark leading-relaxed">
+      <!-- Encabezado -->
+      <header class="bg-primary text-white py-4 shadow-md">
+         <div class="container mx-auto w-[90%] max-w-7xl px-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold no-underline text-white">Campus Cámara FP</a>
+            <nav>
+               <div class="hidden md:flex gap-6">
+                  <a href="#" class="text-white no-underline hover:text-accent transition-colors">Inicio</a>
+                  <a href="#" class="text-white no-underline hover:text-accent transition-colors">Características</a>
+                  <a href="#" class="text-white no-underline hover:text-accent transition-colors">Acceso</a>
+                  <a href="#" class="text-white no-underline hover:text-accent transition-colors">Contacto</a>
+               </div>
+            </nav>
+         </div>
+      </header>
+      <!-- Seccion hero -->
+      <section class="bg-gradient-to-r from-primary to-secondary text-white py-16 text-center">
+         <div class="container mx-auto w-[90%] max-w-7xl px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+               Gestión Eficiente de Horarios para el Claustro
+            </h1>
+            <p class="text-xl max-w-3xl mx-auto mb-8">
+               Una solución integral que simplifica la organización y planificación
+               de horarios para profesores en Campus Cámara FP. Optimiza tu tiempo y
+               mejora la coordinación académica.
+            </p>
+            <a href="/Form"
+               class="inline-block bg-accent text-white px-6 py-3 rounded font-semibold hover:bg-[#e08700] transition-all hover:-translate-y-1 hover:shadow-lg">Acceder
             al Formulario</a>
-    </div>
-</section>
-
-<!-- Features -->
-<section class="py-16">
-    <div class="container mx-auto w-[90%] max-w-7xl px-4">
-        <h2 class="text-3xl font-bold text-center text-primary mb-12">
-            Características Principales
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-xl shadow-md transition-transform hover:-translate-y-2 text-center">
-                <div class="text-4xl text-accent mb-4">📅</div>
-                <h3 class="text-xl font-bold text-primary mb-4">
-                    Organización Inteligente
-                </h3>
-                <p class="text-gray-600">
-                    Sistema avanzado que optimiza la distribución de horarios según
-                    disponibilidad y especialidades de cada profesor.
-                </p>
+         </div>
+      </section>
+      <!-- Funcionalidades -->
+      <section class="py-16">
+         <div class="container mx-auto w-[90%] max-w-7xl px-4">
+            <h2 class="text-3xl font-bold text-center text-primary mb-12">
+               Características Principales
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+               <div class="bg-white p-8 rounded-xl shadow-md transition-transform hover:-translate-y-2 text-center">
+                  <div class="text-4xl text-accent mb-4">📅</div>
+                  <h3 class="text-xl font-bold text-primary mb-4">
+                     Organización Inteligente
+                  </h3>
+                  <p class="text-gray-600">
+                     Sistema avanzado que optimiza la distribución de horarios según
+                     disponibilidad y especialidades de cada profesor.
+                  </p>
+               </div>
+               <div class="bg-white p-8 rounded-xl shadow-md transition-transform hover:-translate-y-2 text-center">
+                  <div class="text-4xl text-accent mb-4">📱</div>
+                  <h3 class="text-xl font-bold text-primary mb-4">Acceso Móvil</h3>
+                  <p class="text-gray-600">
+                     Consulta tus horarios desde cualquier dispositivo. Nuestra
+                     plataforma es completamente responsive.
+                  </p>
+               </div>
+               <div class="bg-white p-8 rounded-xl shadow-md transition-transform hover:-translate-y-2 text-center">
+                  <div class="text-4xl text-accent mb-4">🔔</div>
+                  <h3 class="text-xl font-bold text-primary mb-4">Notificaciones</h3>
+                  <p class="text-gray-600">
+                     Recibe alertas sobre cambios en tu horario, sustituciones y
+                     eventos importantes del centro.
+                  </p>
+               </div>
             </div>
-            <div class="bg-white p-8 rounded-xl shadow-md transition-transform hover:-translate-y-2 text-center">
-                <div class="text-4xl text-accent mb-4">📱</div>
-                <h3 class="text-xl font-bold text-primary mb-4">Acceso Móvil</h3>
-                <p class="text-gray-600">
-                    Consulta tus horarios desde cualquier dispositivo. Nuestra
-                    plataforma es completamente responsive.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl shadow-md transition-transform hover:-translate-y-2 text-center">
-                <div class="text-4xl text-accent mb-4">🔔</div>
-                <h3 class="text-xl font-bold text-primary mb-4">Notificaciones</h3>
-                <p class="text-gray-600">
-                    Recibe alertas sobre cambios en tu horario, sustituciones y
-                    eventos importantes del centro.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CTA -->
-<section class="bg-secondary text-white py-16 text-center" id="formulario">
-    <div class="container mx-auto w-[90%] max-w-7xl px-4">
-        <h2 class="text-3xl font-bold mb-4">
-            ¿Listo para optimizar la gestión de tus horarios?
-        </h2>
-        <p class="mb-8 max-w-xl mx-auto">
-            Accede al formulario para profesores y comienza a disfrutar de todas
-            las ventajas de nuestra plataforma.
-        </p>
-        <a href="/Form"
-           class="inline-block bg-accent text-white px-6 py-3 rounded font-semibold hover:bg-[#e08700] transition-all hover:-translate-y-1 hover:shadow-lg">Completar
+         </div>
+      </section>
+      <!-- Mas letra -->
+      <section class="bg-secondary text-white py-16 text-center" id="formulario">
+         <div class="container mx-auto w-[90%] max-w-7xl px-4">
+            <h2 class="text-3xl font-bold mb-4">
+               ¿Listo para optimizar la gestión de tus horarios?
+            </h2>
+            <p class="mb-8 max-w-xl mx-auto">
+               Accede al formulario para profesores y comienza a disfrutar de todas
+               las ventajas de nuestra plataforma.
+            </p>
+            <a href="/Form"
+               class="inline-block bg-accent text-white px-6 py-3 rounded font-semibold hover:bg-[#e08700] transition-all hover:-translate-y-1 hover:shadow-lg">Completar
             Formulario</a>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer class="bg-dark text-white py-12">
-    <div class="container mx-auto w-[90%] max-w-7xl px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <h3 class="text-accent text-xl font-bold mb-4">Campus Cámara FP</h3>
-                <p class="text-gray-400">
-                    Tu centro de formación profesional de referencia en España.
-                </p>
-                <div class="flex gap-4 mt-4">
-                    <a href="#"
-                       class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
-                        <i class="fab fa-facebook-f text-white"></i>
-                    </a>
-                    <a href="#"
-                       class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
-                        <i class="fab fa-twitter text-white"></i>
-                    </a>
-                    <a href="#"
-                       class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
-                        <i class="fab fa-instagram text-white"></i>
-                    </a>
-                    <a href="#"
-                       class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
-                        <i class="fab fa-linkedin-in text-white"></i>
-                    </a>
-                </div>
+         </div>
+      </section>
+      <!-- Footer -->
+      <footer class="bg-dark text-white py-12">
+         <div class="container mx-auto w-[90%] max-w-7xl px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+               <div>
+                  <h3 class="text-accent text-xl font-bold mb-4">Campus Cámara FP</h3>
+                  <p class="text-gray-400">
+                     Tu centro de formación profesional de referencia en España.
+                  </p>
+                  <div class="flex gap-4 mt-4">
+                     <a href="https://www.facebook.com/profile.php?id=100057051798904"
+                        class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                     <i class="fab fa-facebook-f text-white"></i>
+                     </a>
+                     <a href="https://www.instagram.com/campuscamarafp/"
+                        class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                     <i class="fab fa-instagram text-white"></i>
+                     </a>
+                     <a href="https://www.linkedin.com/school/camara-fp/posts/?feedView=all"
+                        class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                     <i class="fab fa-linkedin-in text-white"></i>
+                     </a>
+                  </div>
+               </div>
+               <div>
+                  <h3 class="text-accent text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                  <a href="#" class="text-gray-400 hover:text-white block mb-2 no-underline">Inicio</a>
+                  <a href="#" class="text-gray-400 hover:text-white block mb-2 no-underline">Contacto</a>
+               </div>
+               <div>
+                  <h3 class="text-accent text-xl font-bold mb-4">Contacto</h3>
+                  <p class="text-gray-400">Dirección: Parc Tecnològic España
+                     Av. Benjamín Franklin, 8
+                     46980 Paterna
+                     Valencia
+                  </p>
+                  <p class="text-gray-400">Email:  info@campuscamarafp.com</p>
+                  <p class="text-gray-400">Teléfono:961 366 209</p>
+               </div>
             </div>
-            <div>
-                <h3 class="text-accent text-xl font-bold mb-4">Enlaces Rápidos</h3>
-                <a href="#" class="text-gray-400 hover:text-white block mb-2 no-underline">Inicio</a>
-                <a href="#" class="text-gray-400 hover:text-white block mb-2 no-underline">Contacto</a>
+            <div class="border-t border-[#444] mt-12 pt-8 text-center text-gray-400">
+               <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
+               <button class="mt-4 text-gray-400 hover:text-white text-sm easter-egg-btn">
+               Campus Cámara FP • 2025
+               </button>
             </div>
-            <div>
-                <h3 class="text-accent text-xl font-bold mb-4">Contacto</h3>
-                <p class="text-gray-400">Dirección: Calle Principal, 123</p>
-                <p class="text-gray-400">Email: info@campuscamarafp.es</p>
-                <p class="text-gray-400">Teléfono: +34 123 456 789</p>
-            </div>
-        </div>
-        <div class="border-t border-[#444] mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
-            <button class="mt-4 text-gray-400 hover:text-white text-sm easter-egg-btn">
-                Campus Cámara FP • 2025
-            </button>
-        </div>
-    </div>
-</footer>
-
-<!-- Easter Egg Modal -->
-<div
-        class="easter-egg-modal fixed inset-0 bg-black/80 flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
-    <div class="bg-dark p-8 rounded-xl max-w-4xl w-[90%] text-center">
-        <h2 class="text-2xl font-bold text-accent mb-4">
-            ¡Has descubierto un secreto!
-        </h2>
-        <p class="text-white mb-4">
-            Bienvenido a nuestro pequeño rincón oculto. Aquí tienes una sorpresa:
-        </p>
-        <div class="bg-[#222] p-4 rounded-lg overflow-x-auto my-4">
-        <pre class="ascii-art text-accent text-xs">
-                             ██████╗  █████╗ ██████╗ ██╗      ██████╗ 
+         </div>
+      </footer>
+      <!-- Easter Egg -->
+      <div
+         class="easter-egg-modal fixed inset-0 bg-black/80 flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+         <div class="bg-dark p-8 rounded-xl max-w-4xl w-[90%] text-center">
+            <h2 class="text-2xl font-bold text-accent mb-4">
+               ¡Has descubierto un secreto!
+            </h2>
+            <p class="text-white mb-4">
+               Bienvenido a nuestro pequeño rincón oculto. Aquí tienes una sorpresa:
+            </p>
+            <div class="bg-[#222] p-4 rounded-lg overflow-x-auto my-4">
+               <pre class="ascii-art text-accent text-xs">
+                             ██████╗  █████╗ ██████╗ ██╗      ██████╗
                              ██╔══██╗██╔══██╗██╔══██╗██║     ██╔═══██╗
                              ██████╔╝███████║██████╔╝██║     ██║   ██║
                              ██╔═══╝ ██╔══██║██╔══██╗██║     ██║   ██║
                              ██║     ██║  ██║██████╔╝███████╗╚██████╔╝
-                             ╚═╝     ╚═╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝ 
-                                                                
-                                         /\      /\      /\      /\            
-                                        /  \    /  \    /  \    /  \           
-                                       /    \  /    \  /    \  /    \          
-                                      /      \/      \/      \/      \         
-                                     /|      ||      ||      ||      |\        
-                                    / |      ||      ||      ||      | \       
-                                   /  |      ||      ||      ||      |  \      
-                                  /   |      ||      ||      ||      |   \     
-                                 /    |      ||      ||      ||      |    \    
-                                /     |______||______||______||______|     \   
-                               /                                            \  
+                             ╚═╝     ╚═╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝
+
+                                         /\      /\      /\      /\
+                                        /  \    /  \    /  \    /  \
+                                       /    \  /    \  /    \  /    \
+                                      /      \/      \/      \/      \
+                                     /|      ||      ||      ||      |\
+                                    / |      ||      ||      ||      | \
+                                   /  |      ||      ||      ||      |  \
+                                  /   |      ||      ||      ||      |   \
+                                 /    |      ||      ||      ||      |    \
+                                /     |______||______||______||______|     \
+                               /                                            \
                               /______________________________________________\
                 </pre>
-        </div>
-        <p class="text-white mb-4">
-            ¡Gracias por ser parte de Campus Cámara FP!
-        </p>
-        <button
-                class="bg-accent text-white px-6 py-2 rounded-lg mx-auto block hover:bg-[#e08700] transition-colors close-btn">
+            </div>
+            <p class="text-white mb-4">
+               ¡Gracias por ser parte de Campus Cámara FP!
+            </p>
+            <button
+               class="bg-accent text-white px-6 py-2 rounded-lg mx-auto block hover:bg-[#e08700] transition-colors close-btn">
             Cerrar
-        </button>
-    </div>
-</div>
-
-<script src="{{ url_for('static', filename='js/index.js') }}"></script>
-<script src="{{ url_for('static', filename='js/tailwind.js') }}"></script>
-</body>
-
+            </button>
+         </div>
+      </div>
+      <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/tailwind.js') }}"></script>
+   </body>
 </html>

@@ -1,6 +1,9 @@
 import mysql.connector
 
 # Conexión a la base de datos
+# Establece la conexión con la base de datos MySQL en AWS RDS
+# Asegúrate de que las credenciales sean correctas y seguras
+
 database = mysql.connector.connect(
     host='horarios.cctsgukqoa4l.us-east-1.rds.amazonaws.com',
     user='admin',
@@ -9,9 +12,12 @@ database = mysql.connector.connect(
     port=3306
 )
 
-
 # Función para insertar datos en la BD
 def upload_data(nombre, apellidos, ciclo, horario):
+    """
+    Inserta un nuevo profesor en la base de datos con su nombre, apellidos,
+    ciclo y horarios.
+    """
     try:
         with database.cursor() as cursor:
             cursor.execute(
@@ -23,9 +29,12 @@ def upload_data(nombre, apellidos, ciclo, horario):
     except mysql.connector.Error as err:
         print(f"❌ Error de MySQL: {err}")
 
-
 # Función para obtener los datos de los profesores
 def get_data():
+    """
+    Recupera todos los datos de la tabla Profesores.
+    Devuelve una lista de diccionarios con la información de cada profesor.
+    """
     try:
         with database.cursor(dictionary=True) as cursor:
             cursor.execute("SELECT * FROM Profesores")
@@ -35,20 +44,26 @@ def get_data():
         print(f"❌ Error al obtener datos: {err}")
         return []  # Retorna una lista vacía si hay un error
 
-
-# Función para contar el número de profesores
+# Función para contar el número de profesores registrados
 def get_profesores():
+    """
+    Devuelve el número total de profesores en la base de datos.
+    """
     try:
         with database.cursor() as cursor:
             cursor.execute("SELECT COUNT(id) FROM Profesores")
-            profesores = cursor.fetchone()[0]  # Obtiene solo el número
+            profesores = cursor.fetchone()[0]  # Obtiene solo el número total
         return profesores
     except mysql.connector.Error as err:
         print(f"❌ Error al contar profesores: {err}")
         return 0  # Devuelve 0 si hay un error
 
-
+# Función para buscar profesores en la base de datos
 def search_profesor(search_query=""):
+    """
+    Busca profesores en la base de datos filtrando por nombre o apellidos.
+    Si no se proporciona una consulta de búsqueda, devuelve todos los registros.
+    """
     try:
         with database.cursor(dictionary=True) as cursor:
             if search_query:

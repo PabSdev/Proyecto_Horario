@@ -404,64 +404,53 @@
         </p>
       </div>
     </div>
-    <footer class="bg-dark text-white py-8">
-      <div class="w-[90%] max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 class="text-accent font-semibold mb-4">Campus Cámara FP</h3>
-            <p class="text-gray-400">
-              Tu centro de formación profesional de referencia en España.
-            </p>
-            <div class="flex gap-4 mt-4">
-              <a
-                href="#"
-                class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1"
-              >
-                <i class="fab fa-facebook-f text-white"></i>
-              </a>
-              <a
-                href="#"
-                class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1"
-              >
-                <i class="fab fa-twitter text-white"></i>
-              </a>
-              <a
-                href="#"
-                class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1"
-              >
-                <i class="fab fa-instagram text-white"></i>
-              </a>
-              <a
-                href="#"
-                class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1"
-              >
-                <i class="fab fa-linkedin-in text-white"></i>
-              </a>
+    <footer class="bg-dark text-white py-12">
+         <div class="container mx-auto w-[90%] max-w-7xl px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+               <div>
+                  <h3 class="text-accent text-xl font-bold mb-4">Campus Cámara FP</h3>
+                  <p class="text-gray-400">
+                     Tu centro de formación profesional de referencia en España.
+                  </p>
+                  <div class="flex gap-4 mt-4">
+                     <a href="https://www.facebook.com/profile.php?id=100057051798904"
+                        class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                     <i class="fab fa-facebook-f text-white"></i>
+                     </a>
+                     <a href="https://www.instagram.com/campuscamarafp/"
+                        class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                     <i class="fab fa-instagram text-white"></i>
+                     </a>
+                     <a href="https://www.linkedin.com/school/camara-fp/posts/?feedView=all"
+                        class="bg-[#444] w-10 h-10 rounded-full flex items-center justify-center hover:bg-accent transition-colors hover:-translate-y-1">
+                     <i class="fab fa-linkedin-in text-white"></i>
+                     </a>
+                  </div>
+               </div>
+               <div>
+                  <h3 class="text-accent text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                  <a href="#" class="text-gray-400 hover:text-white block mb-2 no-underline">Inicio</a>
+                  <a href="#" class="text-gray-400 hover:text-white block mb-2 no-underline">Contacto</a>
+               </div>
+               <div>
+                  <h3 class="text-accent text-xl font-bold mb-4">Contacto</h3>
+                  <p class="text-gray-400">Dirección: Parc Tecnològic España
+                     Av. Benjamín Franklin, 8
+                     46980 Paterna
+                     Valencia
+                  </p>
+                  <p class="text-gray-400">Email:  info@campuscamarafp.com</p>
+                  <p class="text-gray-400">Teléfono:961 366 209</p>
+               </div>
             </div>
-          </div>
-          <div>
-            <h3 class="text-accent font-semibold mb-4">Enlaces Rápidos</h3>
-            <a href="/" class="text-gray-400 hover:text-white block mb-2"
-              >Inicio</a
-            >
-            <a href="#" class="text-gray-400 hover:text-white block mb-2"
-              >Contacto</a
-            >
-          </div>
-          <div>
-            <h3 class="text-accent font-semibold mb-4">Contacto</h3>
-            <p class="text-gray-400">Dirección: Calle Principal, 123</p>
-            <p class="text-gray-400">Email: info@campuscamarafp.es</p>
-            <p class="text-gray-400">Teléfono: +34 123 456 789</p>
-          </div>
-        </div>
-        <div
-          class="text-center border-t border-gray-700 pt-6 mt-6 text-gray-400"
-        >
-          <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
-        </div>
-      </div>
-    </footer>
+            <div class="border-t border-[#444] mt-12 pt-8 text-center text-gray-400">
+               <p>&copy; 2025 Campus Cámara FP. Todos los derechos reservados.</p>
+               <button class="mt-4 text-gray-400 hover:text-white text-sm easter-egg-btn">
+               Campus Cámara FP • 2025
+               </button>
+            </div>
+         </div>
+      </footer>
     <script src="{{ url_for('static', filename='js/form.js') }}"></script>
     <script src="{{ url_for('static', filename='js/tailwind.js') }}"></script>
   </body>

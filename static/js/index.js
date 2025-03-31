@@ -1,3 +1,4 @@
+//Logica de funcionamiento del boton del easter egg
 document.addEventListener('DOMContentLoaded', function () {
   const easterEggBtn = document.querySelector('.easter-egg-btn');
   const easterEggModal = document.querySelector('.easter-egg-modal');
