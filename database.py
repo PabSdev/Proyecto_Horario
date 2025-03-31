@@ -28,6 +28,7 @@ def upload_data(nombre, apellidos, ciclo, horario):
                 (nombre, apellidos, ciclo, horario),
             )
             database.commit()
+            print("Los datos se han actualizado correctamente.")
         return {'message': 'Datos insertados correctamente.'}
     except mysql.connector.Error as err:
         return {'error': f'Error de MySQL: {err}'}

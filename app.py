@@ -102,7 +102,8 @@ def submit_form():
     response = db.upload_data(nombre, apellidos, ciclo, horarios_json)
     if 'error' in response:
         return render_template('Form.html', error=response['error'])
-    return render_template('Form.html', message=response['message'])
+    elif 'message' in response:
+        return render_template('Form.html', message=response['message'])
 
 
 # Función para agrupar los horarios de los profesores por ciclo
