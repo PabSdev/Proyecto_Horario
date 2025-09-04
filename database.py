@@ -46,7 +46,7 @@ def get_data():
             profesores = cursor.fetchall()
         return profesores
     except mysql.connector.Error as err:
-        print(f"❌ Error al obtener datos: {err}")
+        print(f"Error al obtener datos: {err}")
         return []  # Retorna una lista vacía si hay un error
 
 # Función para contar el número de profesores registrados
@@ -60,7 +60,7 @@ def get_profesores():
             profesores = cursor.fetchone()[0]  # Obtiene solo el número total
         return profesores
     except mysql.connector.Error as err:
-        print(f"❌ Error al contar profesores: {err}")
+     print(f"Error al contar profesores: {err}")
         return 0  # Devuelve 0 si hay un error
 
 # Función para buscar profesores en la base de datos
@@ -81,7 +81,7 @@ def search_profesor(search_query=""):
             profesores = cursor.fetchall()
         return profesores
     except mysql.connector.Error as err:
-        print(f"❌ Error al buscar profesores: {err}")
+        print(f"Error al buscar profesores: {err}")
         return []
 
 def verificar_profesor(nombre, apellidos):
@@ -98,5 +98,5 @@ def verificar_profesor(nombre, apellidos):
             resultado = cursor.fetchone()
             return resultado is not None
     except mysql.connector.Error as err:
-        print(f"❌ Error al verificar profesor: {err}")
+        print(f"Error al verificar profesor: {err}")
         return False
